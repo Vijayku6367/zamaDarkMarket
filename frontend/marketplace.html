@@ -751,7 +751,7 @@ html { scroll-behavior: smooth; }
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DarkMarket Marketplace Loaded with 5 Listings');
+             console.log('DarkMarket Marketplace Loaded with 5 Listings');
             
             // Setup wallet connection
             const connectBtn = document.getElementById('connectWallet');
@@ -804,11 +804,6 @@ html { scroll-behavior: smooth; }
                 window.open('https://sepolia.etherscan.io/address/0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25', '_blank');
             });
             
-            // Initial toast
-            setTimeout(() => {
-                showToast('✅ 5 Pre-loaded Listings Ready! Connect wallet to bid.', 'success');
-            }, 1000);
-        });
 
         // Update real bids count from contract (if connected)
         async function updateRealBidsCount() {

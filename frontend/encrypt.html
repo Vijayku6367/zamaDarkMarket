@@ -61,12 +61,6 @@
     gap: 25px;
     justify-content: center;
     margin-top: 10px;
-}
-.nav-links {
-    display: flex;
-    flex-wrap: nowrap;   /* 👈 Items को wrap होने से रोकेगा */
-    justify-content: center;
-    gap: 25px;
 }  
         .nav-link {
             color: var(--gray);
@@ -82,6 +76,10 @@
         }
          .nav-links a {
     white-space: nowrap; /* 👈 Text को टूटी लाइन में गिरने से रोकेगा */
+}
+.nav-links li.active a {
+    color: #FFD43B;   /* same yellow */
+    font-weight: 600;
 }
         .wallet-btn {
             background: var(--yellow);
