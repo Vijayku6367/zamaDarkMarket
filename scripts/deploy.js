@@ -1,18 +1,24 @@
-const hre = require("hardhat");
-
 async function main() {
-  const Market = await hre.ethers.getContractFactory("MockDarkMarket");
-  const market = await Market.deploy();
-  await market.waitForDeployment();
-  console.log("MockDarkMarket deployed at:", await market.getAddress());
-
-  const Math = await hre.ethers.getContractFactory("MockEncryptedMath");
-  const math = await Math.deploy();
-  await math.waitForDeployment();
-  console.log("MockEncryptedMath deployed at:", await math.getAddress());
+  console.log("Starting DarkMarket deployment...");
+  
+  const [deployer] = await ethers.getSigners();
+  console.log("Deployer:", deployer.address);
+  
+  const balance = await deployer.getBalance();
+  console.log("Balance:", ethers.utils.formatEther(balance), "ETH");
+  
+  const DarkMarket = await ethers.getContractFactory("DarkMarket");
+  const darkMarket = await DarkMarket.deploy();
+  
+  await darkMarket.deployed();
+  
+  console.log("DarkMarket deployed to:", darkMarket.address);
+  console.log("Transaction:", darkMarket.deployTransaction.hash);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

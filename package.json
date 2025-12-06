@@ -1,44 +1,32 @@
 {
-  "name": "darkmarket-fhe",
+  "name": "zama-darkmarket",
   "version": "1.0.0",
-  "description": "Fully Homomorphic Encrypted Marketplace",
+  "description": "FHE Dark Market",
   "main": "index.js",
   "scripts": {
-    "dev": "npx http-server frontend -p 3000 -c-1",
-    "build": "echo 'Building DarkMarket FHE...'",
     "test": "hardhat test",
-    "deploy": "hardhat run scripts/deploy.js --network localhost",
-    "demo": "node scripts/demo-flow.js",
-    "start": "node scripts/mock-server.js"
+    "compile": "hardhat compile",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "node": "hardhat node"
+  },
+  "keywords": [
+    "ethereum",
+    "hardhat",
+    "fhe"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "@nomiclabs/hardhat-waffle": "2.0.6",
+    "chai": "4.3.7",
+    "ethereum-waffle": "4.0.10",
+    "ethers": "5.8.0",
+    "hardhat": "2.19.1"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.4.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^4.22.1",
-    "fhenixjs": "^0.4.1",
-    "fhevmjs": "^0.6.2",
-    "gsap": "^3.13.0",
-    "three": "^0.162.0"
-  },
-  "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@types/node": "^20.19.25",
-    "chai": "^4.5.0",
-    "ethers": "^5.7.2",
-    "hardhat": "^2.17.1",
-    "mocha": "^10.8.2",
-    "solc": "^0.8.19"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Vijayku6367/ZamaMarket.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Vijayku6367/ZamaMarket/issues"
-  },
-  "homepage": "https://github.com/Vijayku6367/ZamaMarket#readme"
+    "@zama-fhe/relayer-sdk": "^0.1.0",
+    "dotenv": "17.2.3"
+  }
 }

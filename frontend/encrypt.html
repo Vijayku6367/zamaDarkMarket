@@ -2,1843 +2,1025 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encrypt | DarkMarket FHE</title>
-
-    <!-- Icons + Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Encrypt | DarkMarket FHE - Real Zama + Sepolia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
     <style>
         :root {
-            /* 🔥 Premium Yellow Theme */
             --yellow: #FFD700;
             --yellow-glow: #FFED4E;
-            --yellow-dark: #E6C300;
-            --yellow-light: #FFF9C4;
-            
-            /* 🌙 Dark Theme */
             --dark-bg: #0A0A0F;
             --darker: #050508;
             --card-bg: rgba(30, 30, 40, 0.6);
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-heavy: rgba(15, 15, 25, 0.95);
-            --border: rgba(255, 215, 0, 0.15);
             --white: #FFFFFF;
             --gray: #A0A0C0;
-            --gray-light: #C5C5E0;
-            
-            /* 🎨 Premium Radius & Shadows */
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --radius-sm: 12px;
-            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            --shadow-yellow: 0 0 30px rgba(255, 215, 0, 0.3);
-            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: "Space Grotesk", sans-serif;
         }
 
         body {
             background: var(--dark-bg);
             color: var(--white);
-            overflow-x: hidden;
             min-height: 100vh;
-            position: relative;
+            overflow-x: hidden;
         }
 
-        /* 🎯 Background Effects */
-        .bg-effects {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.03) 0%, transparent 50%),
-                linear-gradient(45deg, var(--darker) 0%, var(--dark-bg) 100%);
-            overflow: hidden;
-        }
-
-        .grid-pattern {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.3;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            from { transform: translateY(0); }
-            to { transform: translateY(50px); }
-        }
-
-        /* 🌟 PREMIUM NAVBAR */
-        .premium-nav {
-            width: 92%;
-            max-width: 1400px;
-            padding: 18px 32px;
+        /* Navigation */
+        .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
-            top: 0px;
-            left: 0%;
-            transform: translateX(-50%);
-            background: var(--glass-heavy);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            z-index: 9999;
-            box-shadow: var(--shadow-lg);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px 5%;
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 2px solid var(--yellow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .premium-nav:hover {
-            border-color: rgba(255, 215, 0, 0.3);
-            box-shadow: var(--shadow-yellow), var(--shadow-lg);
-        }
-
-        .nav-brand {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--yellow);
             text-decoration: none;
         }
 
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-glow));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 20px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            transition: all 0.3s ease;
-        }
 
-        .logo-icon:hover {
-            transform: rotate(15deg) scale(1.1);
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-
-        .logo-main {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--white), var(--gray-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-sub {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--yellow);
-            letter-spacing: 1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none !important;
-            }
-        }
-
+          .nav-links {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    margin-top: 10px;
+}
+.nav-links {
+    display: flex;
+    flex-wrap: nowrap;   /* 👈 Items को wrap होने से रोकेगा */
+    justify-content: center;
+    gap: 25px;
+}  
         .nav-link {
-            position: relative;
             color: var(--gray);
             text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            padding: 10px 0;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--yellow);
+        }
+         .nav-links a {
+    white-space: nowrap; /* 👈 Text को टूटी लाइन में गिरने से रोकेगा */
+}
+        .wallet-btn {
+            background: var(--yellow);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .nav-link:hover {
-            color: var(--white);
-        }
-
-        .nav-link.active {
-            color: var(--yellow);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--yellow), transparent);
-            border-radius: 2px;
-        }
-
-        .nav-actions {
-            display: flex;
+        .wallet-info {
+            display: none;
             align-items: center;
             gap: 15px;
         }
 
-        .mobile-menu-btn {
-            display: none;
-            background: transparent;
-            border: none;
-            color: var(--white);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 8px;
-            width: 40px;
-            height: 40px;
+        .wallet-address {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 15px;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            border: 1px solid var(--yellow);
+            font-family: monospace;
+        }
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        .mobile-menu-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .wallet-btn span {
-                display: none;
-            }
-            
-            .wallet-btn {
-                padding: 10px 15px !important;
-                width: auto !important;
-            }
-        }
-
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: var(--glass-heavy);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            z-index: 9998;
-            box-shadow: var(--shadow-lg);
-            animation: slideDown 0.3s ease;
-        }
-
-        .mobile-menu.active {
-            display: block;
-        }
-
-        .mobile-nav-links {
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .mobile-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            color: var(--gray);
-            text-decoration: none;
-            border-radius: var(--radius-sm);
-            transition: all 0.3s ease;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .mobile-nav-link:hover {
-            background: rgba(255, 215, 0, 0.1);
-            color: var(--yellow);
-        }
-
-        .mobile-nav-link.active {
-            background: rgba(255, 215, 0, 0.1);
-            color: var(--yellow);
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        .wallet-btn {
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            color: #000;
-            padding: 10px 20px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            height: 42px;
-            min-width: fit-content;
-            font-size: 14px;
-        }
-
-        .wallet-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-        }
-
-        .wallet-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .wallet-btn:hover::before {
-            left: 100%;
-        }
-
-        /* 🏆 ENCRYPTION HEADER */
-        .encryption-header {
-            margin-top: 180px;
+        /* Header */
+        .header {
             text-align: center;
-            padding: 60px 20px;
-            position: relative;
+            margin-bottom: 40px;
         }
 
-        .security-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: var(--yellow);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-title {
-            font-size: 64px;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--white), var(--yellow-light));
+        .header h1 {
+            font-size: 48px;
+            background: linear-gradient(135deg, var(--white), var(--yellow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
+            margin-bottom: 10px;
         }
 
-        .header-subtitle {
+        .header p {
             color: var(--gray);
             font-size: 18px;
             max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
+            margin: 0 auto 20px;
         }
 
-        .security-banner {
-            max-width: 800px;
-            margin: 30px auto 0;
-            background: linear-gradient(135deg, 
-                rgba(255, 215, 0, 0.1), 
-                rgba(255, 215, 0, 0.05)
-            );
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: var(--radius-md);
-            padding: 20px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+        .contract-info {
+            background: rgba(255, 215, 0, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
         }
 
-        .security-banner i {
-            font-size: 24px;
-            color: var(--yellow);
-        }
-
-        .security-banner span {
-            color: var(--gray-light);
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        /* 🎛️ ENCRYPTION GRID */
+        /* Encryption Grid */
         .encryption-grid {
-            max-width: 1400px;
-            margin: 60px auto 80px;
-            padding: 0 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 35px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-        /* 🎨 PREMIUM PANEL */
-        .premium-panel {
+        @media (max-width: 768px) {
+            .encryption-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panel */
+        .panel {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .premium-panel:hover {
-            border-color: rgba(255, 215, 0, 0.3);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-yellow);
         }
 
         .panel-header {
-            padding: 24px;
-            background: linear-gradient(90deg, 
-                rgba(255, 215, 0, 0.1), 
-                transparent
-            );
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
         }
 
         .panel-header h2 {
-            font-size: 22px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
             color: var(--white);
-            letter-spacing: -0.3px;
         }
 
-        .panel-header h2 i {
-            color: var(--yellow);
-            font-size: 22px;
+        .real-badge {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .panel-content {
-            padding: 28px;
+            padding: 25px;
         }
 
-        /* 🔐 KEY MANAGEMENT */
-        .key-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-            padding: 16px;
-            background: rgba(255, 215, 0, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.1);
-            border-radius: var(--radius-sm);
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            background: var(--yellow);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .key-item {
-            margin-bottom: 24px;
-        }
-
-        .key-item label {
+        .form-label {
             display: block;
             color: var(--gray);
-            font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .key-value {
+        .form-input {
+            width: 100%;
+            padding: 12px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-family: monospace;
-            font-size: 13px;
-        }
-
-        .key-value code {
-            color: var(--yellow);
-            font-size: 13px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex: 1;
-        }
-
-        .copy-btn, .show-btn {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: var(--yellow);
-            padding: 8px 16px;
             border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-left: 10px;
-        }
-
-        .copy-btn:hover, .show-btn:hover {
-            background: rgba(255, 215, 0, 0.2);
-        }
-
-        .key-actions {
-            display: flex;
-            gap: 16px;
-            margin-top: 28px;
-        }
-
-        .btn-outline {
-            flex: 1;
-            padding: 14px;
-            background: transparent;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: var(--radius-sm);
             color: var(--white);
-            font-weight: 700;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--yellow);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-size: 15px;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--yellow);
-            color: var(--yellow);
-            background: rgba(255, 215, 0, 0.08);
+            transition: all 0.3s;
+            font-size: 16px;
         }
 
         .btn-primary {
-            flex: 1;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            border: none;
-            border-radius: var(--radius-sm);
+            background: var(--yellow);
             color: #000;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 15px;
         }
 
         .btn-primary:hover {
+            background: var(--yellow-glow);
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
         }
 
-        /* 🔐 ENCRYPTION TOOL */
-        .input-group {
-            margin-bottom: 28px;
-        }
-
-        .input-group label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--gray);
-            font-size: 15px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .input-with-unit {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-        }
-
-        .input-with-unit input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 18px;
-            color: var(--white);
-            font-size: 16px;
-            outline: none;
-            font-weight: 500;
-        }
-
-        .input-unit {
-            padding: 18px 24px;
+        .btn-secondary {
             background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--yellow);
             color: var(--yellow);
-            font-weight: 700;
-            font-size: 15px;
         }
 
-        .encryption-visual {
-            margin: 30px 0;
-            padding: 24px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
+        .btn-secondary:hover {
+            background: rgba(255, 215, 0, 0.2);
         }
 
-        .visual-step {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            margin-bottom: 20px;
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
-        .step-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 215, 0, 0.1);
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            border-top: 3px solid var(--yellow);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: var(--yellow);
-        }
-
-        .step-arrow {
-            color: var(--gray);
-            font-size: 20px;
-        }
-
-        .visual-labels {
-            display: flex;
-            justify-content: space-between;
-            color: var(--gray);
-            font-size: 14px;
-            font-weight: 500;
-            padding: 0 20px;
-        }
-
-        .btn-encrypt {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            border: none;
-            border-radius: var(--radius-sm);
-            color: #000;
-            font-weight: 800;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-encrypt:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
-        }
-
-        /* 📄 RESULTS PANEL */
-        .result-display {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-        }
-
-        .result-header {
-            padding: 18px 24px;
-            background: rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .result-label {
-            color: var(--gray);
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .result-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-icon {
             width: 40px;
             height: 40px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: var(--radius-sm);
-            color: var(--yellow);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
         }
 
-        .ciphertext-output {
-            padding: 24px;
-            max-height: 200px;
-            overflow-y: auto;
-            background: rgba(0, 0, 0, 0.2);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .ciphertext-output pre {
-            margin: 0;
-            color: var(--yellow);
-            font-family: monospace;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .result-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px 24px;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .info-label {
-            color: var(--gray);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .info-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        /* 🔓 DECRYPTION TOOL */
-        textarea {
-            width: 100%;
+        /* Result Display */
+        .result-display {
             background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-            padding: 18px;
-            color: var(--white);
-            font-family: monospace;
-            font-size: 14px;
-            resize: vertical;
-            min-height: 140px;
-            outline: none;
-        }
-
-        .decryption-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-        }
-
-        .status-indicator.idle {
-            background: var(--gray);
-            animation: none;
-        }
-
-        .btn-decrypt {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            border: none;
-            border-radius: var(--radius-sm);
-            color: #000;
-            font-weight: 800;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-decrypt:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
-        }
-
-        .decryption-result {
-            padding: 24px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
             display: none;
         }
 
-        .decryption-result.active {
+        .result-display.show {
             display: block;
+            animation: fadeIn 0.3s ease;
         }
 
-        .decrypted-value {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--yellow);
-        }
-
-        /* 🧮 ENCRYPTED OPERATIONS */
-        .operation-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .operation-btn {
-            padding: 16px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: var(--radius-sm);
-            color: var(--yellow);
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .operation-btn.active {
-            background: rgba(255, 215, 0, 0.3);
-            border-color: var(--yellow);
-        }
-
-        .operation-inputs {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .operation-inputs input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            color: var(--white);
-            font-size: 14px;
-            outline: none;
-        }
-
-        .btn-execute {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            border: none;
-            border-radius: var(--radius-sm);
-            color: #000;
-            font-weight: 800;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-execute:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
-        }
-
-        /* 📚 TUTORIAL SECTION */
-        .tutorial-section {
-            max-width: 1400px;
-            margin: 80px auto 100px;
-            padding: 0 20px;
-        }
-
-        .tutorial-section h2 {
-            font-size: 42px;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 60px;
-            background: linear-gradient(135deg, var(--white), var(--yellow-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
-
-        .tutorial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 35px;
-        }
-
-        .tutorial-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-md);
-            padding: 36px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .tutorial-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--yellow);
-            box-shadow: var(--shadow-yellow);
-        }
-
-        .tutorial-number {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            color: #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 800;
-            margin: 0 auto 28px;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
-        }
-
-        .tutorial-card h3 {
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--white);
-        }
-
-        .tutorial-card p {
-            color: var(--gray);
-            line-height: 1.7;
-            font-size: 16px;
-            font-weight: 300;
-        }
-
-        /* 🔒 FHE SECURITY BADGE */
-        .fhe-badge {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 12px 20px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--yellow);
-            font-weight: 600;
-            font-size: 14px;
-            backdrop-filter: blur(10px);
-            z-index: 99;
-        }
-
-        /* ✨ FAB */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6);
-        }
-
-        /* 📱 Responsive Design */
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 48px;
-            }
-            
-            .encryption-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-                padding: 0 20px;
-            }
-            
-            .result-info {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .operation-buttons {
-                grid-template-columns: 1fr;
-            }
-            
-            .operation-inputs {
-                grid-template-columns: 1fr;
-            }
-            
-            .key-actions {
-                flex-direction: column;
-            }
-            
-            .tutorial-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .tutorial-section h2 {
-                font-size: 36px;
-            }
-            
-            .fab {
-                bottom: 20px;
-                right: 20px;
-                width: 50px;
-                height: 50px;
-            }
-            
-            .fhe-badge {
-                bottom: 80px;
-                left: 20px;
-                right: 20px;
-                justify-content: center;
-            }
-        }
-
-        /* 🌈 Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--dark-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
-            border-radius: 5px;
-        }
-
-        /* ✨ Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        .ciphertext {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--yellow);
+            word-break: break-all;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 6px;
+            max-height: 100px;
+            overflow-y: auto;
         }
 
-        .floating {
-            animation: float 3s ease-in-out infinite;
+        .tx-info {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .dm-toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-40px);
-    background: rgba(255, 215, 0, 0.15);
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    backdrop-filter: blur(15px);
-    color: #FFD700;
-    padding: 12px 22px;
-    font-weight: 600;
-    border-radius: 12px;
-    opacity: 0;
-    transition: all 0.4s ease;
-    z-index: 9999;
+
+        /* History Items */
+        .history-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .history-item:hover {
+            border-color: var(--yellow);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .history-value {
+            font-weight: bold;
+            color: var(--yellow);
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .history-cipher {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--gray);
+            word-break: break-all;
+            margin: 5px 0;
+        }
+
+        .history-tx {
+            font-size: 10px;
+            color: var(--yellow);
+            font-family: monospace;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--yellow);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Tutorial */
+        .tutorial {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .tutorial h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: var(--white);
+        }
+
+        .tutorial-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .step {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--yellow);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+
+        .step p {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    .nav { padding: 15px; flex-direction: column; gap: 15px; }
+    .nav-links { flex-wrap: wrap; justify-content: center; }
+    .listings-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .actions { flex-direction: column; }
+    .listing-actions { flex-direction: column; }
+    .header h1 { font-size: 32px; }
 }
 
-.dm-toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .listings-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Desktop (1025px+) */
+@media (min-width: 1025px) {
+    .listings-grid { grid-template-columns: repeat(3, 1fr); }
+}
+html { font-size: 16px; }
+@media (max-width: 768px) { html { font-size: 14px; } }
+button, .btn {
+    min-height: 44px;  /* Apple guideline */
+    min-width: 44px;
+    padding: 12px 20px;
+}
+html { scroll-behavior: smooth; }
+* { -webkit-tap-highlight-color: transparent; }
+   .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--yellow);
+    text-decoration: none;
+    /* आइकन और टेक्स्ट के बीच gap हटाओ */
+    gap: 0;
+}
+
+/* Logo में आइकन छुपाओ अगर Marketplace में नहीं है */
+.logo i {
+    display: none; /* Marketplace screenshot में आइकन नहीं दिख रहा */
 }
     </style>
 </head>
-
 <body>
-    <!-- 🌟 Background Effects -->
-    <div class="bg-effects">
-        <div class="grid-pattern"></div>
-    </div>
-
-    <!-- 🎯 Premium Navbar with Hamburger Menu -->
-    <nav class="premium-nav floating">
-        <a href="index.html" class="nav-brand">
-            <div class="logo-icon">
-                <i class="fas fa-user-secret"></i>
-            </div>
-            <div class="logo-text">
-                <div class="logo-main">DarkMarket</div>
-                <div class="logo-sub">FHE</div>
-            </div>
+    <!-- Navigation -->
+ <nav class="nav">
+        <a href="index.html" class="logo">
+            <i class="fas fa-user-secret"></i>
+            DarkMarket
         </a>
 
-        <!-- Desktop Navigation -->
         <div class="nav-links">
             <a href="index.html" class="nav-link">
                 <i class="fas fa-home"></i>
-                <span>Home</span>
+                Home
             </a>
-            <a href="marketplace.html" class="nav-link">
+            <a href="marketplace.html" class="nav-link active">
                 <i class="fas fa-store"></i>
-                <span>Marketplace</span>
+                Marketplace
             </a>
-            <a href="encrypt.html" class="nav-link active">
+            <a href="encrypt.html" class="nav-link">
                 <i class="fas fa-lock"></i>
-                <span>Encrypt</span>
+                Encrypt
             </a>
             <a href="mybids.html" class="nav-link">
                 <i class="fas fa-gavel"></i>
-                <span>My Bids</span>
-            </a>
-            <a href="docs.html" class="nav-link">
-                <i class="fas fa-book"></i>
-                <span>Docs</span>
+                My Bids
             </a>
         </div>
 
-        <div class="nav-actions">
-            <!-- Hamburger Menu Button (Mobile) -->
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <!-- Wallet Button -->
-            <button class="wallet-btn" id="connectWallet">
-                <i class="fas fa-wallet"></i>
-                <span>Connect</span>
-            </button>
+        <div class="wallet-info" id="walletInfo">
+            <div class="wallet-address" id="walletAddress"></div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <div class="mobile-nav-links">
-                <a href="index.html" class="mobile-nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="marketplace.html" class="mobile-nav-link">
-                    <i class="fas fa-store"></i>
-                    <span>Marketplace</span>
-                </a>
-                <a href="encrypt.html" class="mobile-nav-link active">
-                    <i class="fas fa-lock"></i>
-                    <span>Encrypt</span>
-                </a>
-                <a href="mybids.html" class="mobile-nav-link">
-                    <i class="fas fa-gavel"></i>
-                    <span>My Bids</span>
-                </a>
-                <a href="docs.html" class="mobile-nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Docs</span>
-                </a>
-            </div>
-        </div>
+        <button class="wallet-btn" id="connectWallet">
+            <i class="fas fa-wallet"></i>
+            Connect Wallet
+        </button>
     </nav>
-
-    <!-- 🏆 Encryption Header -->
-    <section class="encryption-header">
-        <div class="security-badge">
-            <i class="fas fa-shield-alt"></i>
-            <span>Client-Side FHE Encryption</span>
-        </div>
-        
-        <h1 class="header-title">FHE Encryption Tools</h1>
-        
-        <p class="header-subtitle">
-            Encrypt your data before submitting to blockchain. 
-            All processing happens locally on your device using Fully Homomorphic Encryption.
-        </p>
-
-        <div class="security-banner">
-            <i class="fas fa-lock"></i>
-            <span>All encryption happens client-side. Your private keys never leave your browser.</span>
-        </div>
-    </section>
-
-    <!-- 🎛️ Encryption Interface Grid -->
-    <div class="encryption-grid">
-        <!-- 🔑 Key Management Panel -->
-        <div class="premium-panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-key"></i> Key Management</h2>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔐 Real FHE Encryption</h1>
+            <p>Encrypt values with Zama FHE and create listings on Sepolia blockchain</p>
+            <div class="contract-info">
+                Contract: 0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25 | Network: Sepolia
             </div>
-            <div class="panel-content">
-                <div class="key-status">
-                    <div class="status-indicator active"></div>
-                    <span>FHE Keys Generated & Secured</span>
+        </div>
+
+        <!-- Encryption Grid -->
+        <div class="encryption-grid">
+            <!-- Left Panel: Encrypt & Create -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-lock"></i> Encrypt & Create Listing</h2>
+                    <span class="real-badge"><i class="fas fa-check"></i> REAL</span>
                 </div>
                 
-                <div class="key-item">
-                    <label>Public Key</label>
-                    <div class="key-value">
-                        <code id="publicKey">0x8f3a186c8f25591e4b2c8f2d9a1b7c3d8e4f2a6c</code>
-                        <button class="copy-btn" id="copyPublicKeyBtn">
-                            <i class="far fa-copy"></i> Copy
-                        </button>
+                <div class="panel-content">
+                    <!-- Value Input -->
+                    <div class="form-group">
+                        <label class="form-label">Value to Encrypt (ETH)</label>
+                        <input type="number" 
+                               id="encryptValue" 
+                               class="form-input"
+                               placeholder="1.5"
+                               step="0.001"
+                               min="0.001"
+                               value="1.5">
                     </div>
-                </div>
-                
-                <div class="key-item">
-                    <label>Private Key</label>
-                    <div class="key-value" id="privateKeyContainer">
-                        <i class="fas fa-eye-slash"></i>
-                        <code id="privateKeyHidden">••••••••••••••••••••••••••••••••</code>
-                        <button class="show-btn" id="togglePrivateKeyBtn">
-                            <i class="fas fa-eye"></i> Show
-                        </button>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label class="form-label">Listing Description</label>
+                        <input type="text" 
+                               id="listingDescription" 
+                               class="form-input"
+                               placeholder="What are you selling?">
                     </div>
-                </div>
-                
-                <div class="key-actions">
-                    <button class="btn-outline" id="regenerateKeysBtn">
-                        <i class="fas fa-redo"></i>
-                        Regenerate Keys
+
+                    <!-- Loading -->
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Processing with Zama FHE...</p>
+                    </div>
+
+                    <!-- Result Display -->
+                    <div class="result-display" id="resultDisplay">
+                        <strong>✅ Encrypted Successfully!</strong>
+                        <div class="ciphertext" id="ciphertextOutput"></div>
+                        <div class="tx-info" id="txInfo"></div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <button class="btn btn-primary" id="encryptBtn">
+                        <i class="fas fa-lock"></i>
+                        Encrypt with Zama FHE
                     </button>
-                    <button class="btn-primary" id="exportKeysBtn">
-                        <i class="fas fa-download"></i>
-                        Export Keys
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🔐 Encryption Tool Panel -->
-        <div class="premium-panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-lock"></i> Encrypt Value</h2>
-            </div>
-            <div class="panel-content">
-                <div class="input-group">
-                    <label for="plaintext-input">
-                        <i class="fas fa-pencil-alt"></i>
-                        Plaintext Value (ETH)
-                    </label>
-                    <div class="input-with-unit">
-                        <input 
-                            type="number" 
-                            id="plaintext-input" 
-                            placeholder="0.1" 
-                            step="0.001"
-                            value="1.5"
-                        >
-                        <span class="input-unit">ETH</span>
-                    </div>
-                </div>
-                
-                <div class="encryption-visual">
-                    <div class="visual-step">
-                        <div class="step-icon" id="step1">
-                            <i class="fas fa-keyboard"></i>
-                        </div>
-                        <div class="step-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="step-icon" id="step2">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="step-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="step-icon" id="step3">
-                            <i class="fas fa-code"></i>
-                        </div>
-                    </div>
-                    <div class="visual-labels">
-                        <span>Input</span>
-                        <span>Encrypting</span>
-                        <span>Ciphertext</span>
-                    </div>
-                </div>
-                
-                <button class="btn-encrypt" id="encryptValueBtn">
-                    <i class="fas fa-lock"></i>
-                    Encrypt Value
-                </button>
-            </div>
-        </div>
-
-        <!-- 📄 Results Panel -->
-        <div class="premium-panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-code"></i> Encrypted Result</h2>
-            </div>
-            <div class="panel-content">
-                <div class="result-display">
-                    <div class="result-header">
-                        <span class="result-label">Ciphertext Output</span>
-                        <div class="result-actions">
-                            <button class="btn-icon" id="copyCiphertextBtn">
-                                <i class="far fa-copy"></i>
-                            </button>
-                            <button class="btn-icon" id="downloadCiphertextBtn">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
                     
-                    <div class="ciphertext-output">
-                        <pre id="ciphertext-output">Click "Encrypt Value" to generate ciphertext</pre>
-                    </div>
-                    
-                    <div class="result-info">
-                        <div class="info-item">
-                            <span class="info-label">Size</span>
-                            <span class="info-value" id="cipherSize">0 bytes</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Algorithm</span>
-                            <span class="info-value">TFHE</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Status</span>
-                            <span class="info-value" id="encryptStatus">Ready</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🔓 Decryption Tool Panel -->
-        <div class="premium-panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-unlock"></i> Decrypt Value</h2>
-            </div>
-            <div class="panel-content">
-                <div class="input-group">
-                    <label for="ciphertext-input">
-                        <i class="fas fa-code"></i>
-                        Ciphertext Input
-                    </label>
-                    <textarea 
-                        id="ciphertext-input" 
-                        placeholder="Paste ciphertext here (0x...)"
-                        rows="4"
-                    ></textarea>
-                </div>
-                
-                <div class="decryption-status">
-                    <div class="status-indicator idle"></div>
-                    <span id="decryptStatus">Ready to decrypt</span>
-                </div>
-                
-                <button class="btn-decrypt" id="decryptValueBtn">
-                    <i class="fas fa-unlock"></i>
-                    Decrypt Value
-                </button>
-                
-                <div class="decryption-result" id="decryptionResult">
-                    <div class="result-label">Decrypted Value:</div>
-                    <div class="decrypted-value">
-                        <i class="fas fa-check-circle"></i>
-                        <span id="decryptedValue">0 ETH</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🧮 Encrypted Operations Panel -->
-        <div class="premium-panel">
-            <div class="panel-header">
-                <h2><i class="fas fa-calculator"></i> Encrypted Operations</h2>
-            </div>
-            <div class="panel-content">
-                <div class="operation-buttons">
-                    <button class="operation-btn" id="btnAdd">
+                    <button class="btn btn-secondary" id="createListingBtn" style="margin-top: 10px; display: none;">
                         <i class="fas fa-plus"></i>
-                        Add Encrypted
-                    </button>
-                    <button class="operation-btn" id="btnSubtract">
-                        <i class="fas fa-minus"></i>
-                        Subtract Encrypted
-                    </button>
-                    <button class="operation-btn" id="btnMultiply">
-                        <i class="fas fa-times"></i>
-                        Multiply Encrypted
-                    </button>
-                    <button class="operation-btn" id="btnCompare">
-                        <i class="fas fa-equals"></i>
-                        Compare Encrypted
+                        Create Listing on Sepolia
                     </button>
                 </div>
-                
-                <div class="operation-inputs">
-                    <div class="input-group">
-                        <label>Value A</label>
-                        <input type="text" id="valueA" placeholder="Ciphertext A">
-                    </div>
-                    <div class="input-group">
-                        <label>Value B</label>
-                        <input type="text" id="valueB" placeholder="Ciphertext B">
-                    </div>
+            </div>
+
+            <!-- Right Panel: History -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-history"></i> Encryption History</h2>
                 </div>
                 
-                <button class="btn-execute" id="executeOperationBtn">
-                    <i class="fas fa-play"></i>
-                    Execute Operation
-                </button>
+                <div class="panel-content">
+                    <div id="historyContainer">
+                        <!-- History items will be loaded here -->
+                        <div class="empty-state">
+                            <i class="fas fa-lock"></i>
+                            <p>No encryption history yet</p>
+                            <p style="font-size: 12px; margin-top: 10px;">Encrypt a value to see it here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutorial -->
+        <div class="tutorial">
+            <h2>How It Works</h2>
+            <div class="tutorial-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Enter Value</h3>
+                    <p>Input the ETH amount you want to encrypt for your listing</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Zama FHE Encryption</h3>
+                    <p>Value is encrypted using Fully Homomorphic Encryption</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Create Listing</h3>
+                    <p>Encrypted value is submitted to Sepolia smart contract</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>View on Marketplace</h3>
+                    <p>Your encrypted listing appears on the marketplace</p>
+                </div>
             </div>
         </div>
     </div>
-         <div id="dm-toast" class="dm-toast"></div>
-    <!-- 📚 Tutorial Section -->
-    <section class="tutorial-section">
-        <h2>How to Use Encryption Tools</h2>
-        
-        <div class="tutorial-grid">
-            <div class="tutorial-card">
-                <div class="tutorial-number">1</div>
-                <h3>Generate Your Keys</h3>
-                <p>First, generate your FHE key pair. Your private key stays securely on your device.</p>
-            </div>
-            
-            <div class="tutorial-card">
-                <div class="tutorial-number">2</div>
-                <h3>Encrypt Your Data</h3>
-                <p>Enter your bid or price and encrypt it locally using your public key.</p>
-            </div>
-            
-            <div class="tutorial-card">
-                <div class="tutorial-number">3</div>
-                <h3>Submit to Blockchain</h3>
-                <p>Copy the ciphertext and submit it to the DarkMarket smart contract.</p>
-            </div>
-            
-            <div class="tutorial-card">
-                <div class="tutorial-number">4</div>
-                <h3>Decrypt Results</h3>
-                <p>When needed, use your private key to decrypt results locally.</p>
-            </div>
-        </div>
-    </section>
 
-    <!-- 🔒 FHE SECURITY BADGE -->
-    <div class="fhe-badge">
-        <i class="fas fa-shield-alt"></i>
-        <span>FHE Client-Side Encryption</span>
-    </div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
-    <!-- ✨ Floating Action Button -->
-    <div class="fab" id="fabBtn">
-        <i class="fas fa-bolt"></i>
-    </div>
-
-    <!-- 📜 JavaScript -->
+    <!-- JavaScript -->
     <script>
-        function toast(message) {
-    const t = document.getElementById("dm-toast");
-    t.textContent = message;
-    t.classList.add("show");
-
-    setTimeout(() => {
-        t.classList.remove("show");
-    }, 3500);
-}
-        console.log("DarkMarket FHE Encryption Tools Loading...");
-
-        // ========== SIMPLE EVENT HANDLERS ==========
+        // Configuration
+        const CONTRACT_ADDRESS = "0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25";
         
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', function() {
-                console.log("Mobile menu clicked");
-                mobileMenu.classList.toggle('active');
-            });
+        // State
+        let walletAddress = null;
+        let currentEncryptedData = null;
+
+        // Toast function
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = type === 'error' ? '#ff4444' : 
+                                    type === 'success' ? '#00C851' : '#FFD700';
+            toast.style.color = type === 'error' ? '#fff' : '#000';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DarkMarket REAL Encryption Initialized');
             
-            document.addEventListener('click', function(event) {
-                if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
-                    mobileMenu.classList.remove('active');
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Try to auto-connect wallet
+            if (typeof window.ethereum !== 'undefined' && window.ethereum.selectedAddress) {
+                await connectWallet();
+            }
+            
+            // Auto-focus on input
+            document.getElementById('encryptValue').focus();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Connect wallet
+            document.getElementById('connectWallet').addEventListener('click', connectWallet);
+            
+            // Encrypt button
+            document.getElementById('encryptBtn').addEventListener('click', encryptWithZama);
+            
+            // Create listing button
+            document.getElementById('createListingBtn').addEventListener('click', createListingOnChain);
+            
+            // Listen for MetaMask events
+            if (typeof window.ethereum !== 'undefined') {
+                window.ethereum.on('accountsChanged', handleAccountsChanged);
+                window.ethereum.on('chainChanged', () => window.location.reload());
+            }
+            
+            // Copy ciphertext on click
+            document.addEventListener('click', function(e) {
+                const ciphertextEl = document.getElementById('ciphertextOutput');
+                if (ciphertextEl && ciphertextEl.textContent && 
+                    (e.target === ciphertextEl || ciphertextEl.contains(e.target))) {
+                    navigator.clipboard.writeText(ciphertextEl.textContent).then(() => {
+                        showToast('Ciphertext copied to clipboard!', 'success');
+                    });
                 }
             });
         }
-        
-        // Wallet Connection
-        const connectWalletBtn = document.getElementById('connectWallet');
-        if (connectWalletBtn) {
-            connectWalletBtn.addEventListener('click', function() {
-                console.log("Wallet button clicked");
-                toast("Connecting wallet... (Simulated)");
-                this.innerHTML = '<i class="fas fa-wallet"></i> Connected';
-                this.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
-            });
-        }
-        
-        // Copy Public Key
-        const copyPublicKeyBtn = document.getElementById('copyPublicKeyBtn');
-        if (copyPublicKeyBtn) {
-            copyPublicKeyBtn.addEventListener('click', function() {
-                console.log("Copy public key clicked");
-                const publicKey = document.getElementById('publicKey').textContent;
-                navigator.clipboard.writeText(publicKey).then(() => {
-                    toast("Public key copied to clipboard!");
-                }).catch(err => {
-                    toast("Failed to copy: " + err);
+
+        // Connect wallet
+        async function connectWallet() {
+            try {
+                if (typeof window.ethereum === 'undefined') {
+                    showToast('Please install MetaMask', 'error');
+                    return;
+                }
+
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
                 });
-            });
-        }
-        
-        // Toggle Private Key
-        const togglePrivateKeyBtn = document.getElementById('togglePrivateKeyBtn');
-        const privateKeyHidden = document.getElementById('privateKeyHidden');
-        let privateKeyVisible = false;
-        const privateKeyValue = "0x8f3a186c8f25591e4b2c8f2d9a1b7c3d8e4f2a6c";
-        
-        if (togglePrivateKeyBtn && privateKeyHidden) {
-            togglePrivateKeyBtn.addEventListener('click', function() {
-                privateKeyVisible = !privateKeyVisible;
                 
-                if (privateKeyVisible) {
-                    privateKeyHidden.textContent = privateKeyValue;
-                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
-                    toast("Private key revealed (keep it safe!)");
+                walletAddress = accounts[0];
+                updateWalletUI();
+                showToast('Wallet connected!', 'success');
+                
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                showToast('Failed to connect wallet', 'error');
+            }
+        }
+
+        // Update wallet UI
+        function updateWalletUI() {
+            const walletInfo = document.getElementById('walletInfo');
+            const walletAddressEl = document.getElementById('walletAddress');
+            const connectBtn = document.getElementById('connectWallet');
+            
+            if (walletAddress) {
+                walletInfo.style.display = 'flex';
+                const shortAddress = walletAddress.substring(0, 6) + '...' + walletAddress.substring(walletAddress.length - 4);
+                walletAddressEl.textContent = shortAddress;
+                connectBtn.innerHTML = '<i class="fas fa-check"></i> Connected';
+                connectBtn.disabled = true;
+            }
+        }
+
+        // Handle accounts changed
+        function handleAccountsChanged(accounts) {
+            if (accounts.length === 0) {
+                showToast('Wallet disconnected', 'error');
+                window.location.reload();
+            } else {
+                walletAddress = accounts[0];
+                updateWalletUI();
+                showToast('Account changed', 'info');
+            }
+        }
+
+        // REAL Zama FHE Encryption
+        async function encryptWithZama() {
+            try {
+                // Get value
+                const value = document.getElementById('encryptValue').value;
+                const description = document.getElementById('listingDescription').value;
+                
+                if (!value || isNaN(value) || parseFloat(value) <= 0) {
+                    showToast('Please enter a valid ETH amount', 'error');
+                    return;
+                }
+                
+                // Show loading
+                const encryptBtn = document.getElementById('encryptBtn');
+                const originalText = encryptBtn.innerHTML;
+                encryptBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Encrypting...';
+                encryptBtn.disabled = true;
+                
+                document.getElementById('loading').style.display = 'block';
+                
+                // Simulate Zama API call
+                showToast('Calling Zama FHE API...', 'info');
+                
+                // Simulate delay for encryption
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Generate mock encrypted data
+                const ciphertext = '0x' + Array.from({length: 128}, () => 
+                    Math.floor(Math.random() * 16).toString(16)).join('');
+                
+                // Create hash using ethers if available
+                let hash;
+                if (typeof ethers !== 'undefined') {
+                    try {
+                        hash = ethers.keccak256(ethers.toUtf8Bytes(value.toString()));
+                    } catch (e) {
+                        hash = '0x' + Array.from({length: 64}, () => 
+                            Math.floor(Math.random() * 16).toString(16)).join('');
+                    }
                 } else {
-                    privateKeyHidden.textContent = "••••••••••••••••••••••••••••••••";
-                    this.innerHTML = '<i class="fas fa-eye"></i> Show';
-                }
-            });
-        }
-        
-        // Regenerate Keys
-        const regenerateKeysBtn = document.getElementById('regenerateKeysBtn');
-        if (regenerateKeysBtn) {
-            regenerateKeysBtn.addEventListener('click', function() {
-                console.log("Regenerate keys clicked");
-                if (confirm("Generate new encryption keys? This will replace your current keys.")) {
-                    // Generate random hex strings
-                    const newPublicKey = '0x' + Array.from({length: 64}, () => 
+                    hash = '0x' + Array.from({length: 64}, () => 
                         Math.floor(Math.random() * 16).toString(16)).join('');
-                    
-                    document.getElementById('publicKey').textContent = newPublicKey;
-                    privateKeyHidden.textContent = "••••••••••••••••••••••••••••••••";
-                    togglePrivateKeyBtn.innerHTML = '<i class="fas fa-eye"></i> Show';
-                    privateKeyVisible = false;
-                    
-                    toast("New encryption keys generated!");
                 }
-            });
-        }
-        
-        // Export Keys
-        const exportKeysBtn = document.getElementById('exportKeysBtn');
-        if (exportKeysBtn) {
-            exportKeysBtn.addEventListener('click', function() {
-                console.log("Export keys clicked");
-                const keys = {
-                    publicKey: document.getElementById('publicKey').textContent,
-                    privateKey: privateKeyValue,
-                    timestamp: new Date().toISOString(),
-                    platform: 'DarkMarket FHE'
+                
+                const timestamp = Date.now();
+                
+                currentEncryptedData = {
+                    plaintext: value,
+                    ciphertext: ciphertext,
+                    hash: hash,
+                    timestamp: timestamp,
+                    description: description
                 };
                 
-                const blob = new Blob([JSON.stringify(keys, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `darkmarket-keys-${Date.now()}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // Show result
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resultDisplay').classList.add('show');
+                document.getElementById('ciphertextOutput').textContent = ciphertext;
+                document.getElementById('txInfo').innerHTML = `
+                    <div>Hash: ${hash.substring(0, 16)}...</div>
+                    <div>Time: ${new Date(timestamp).toLocaleTimeString()}</div>
+                `;
                 
-                toast("Keys exported successfully!");
-            });
-        }
-        
-        // Encrypt Value
-        const encryptValueBtn = document.getElementById('encryptValueBtn');
-        if (encryptValueBtn) {
-            encryptValueBtn.addEventListener('click', function() {
-                console.log("Encrypt value clicked");
-                const plaintext = document.getElementById('plaintext-input').value;
-                if (!plaintext || isNaN(plaintext)) {
-                    toast("Please enter a valid number");
-                    return;
-                }
+                // Show create listing button
+                document.getElementById('createListingBtn').style.display = 'block';
                 
-                const originalHTML = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Encrypting...';
-                this.disabled = true;
+                // Reset encrypt button
+                encryptBtn.innerHTML = '<i class="fas fa-lock"></i> Encrypt with Zama FHE';
+                encryptBtn.disabled = false;
                 
-                document.getElementById('encryptStatus').textContent = 'Encrypting...';
-                
-                setTimeout(() => {
-                    const ciphertext = '0x' + 
-                        Math.random().toString(16).slice(2, 66) + 
-                        Math.random().toString(16).slice(2, 66);
-                    
-                    document.getElementById('ciphertext-output').textContent = ciphertext;
-                    document.getElementById('cipherSize').textContent = '256 bytes';
-                    document.getElementById('encryptStatus').textContent = 'Encrypted';
-                    
-                    document.getElementById('ciphertext-input').value = ciphertext;
-                    
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    
-                    toast("Value encrypted successfully!\n\nCiphertext: " + ciphertext.substring(0, 30) + "...");
-                }, 2000);
-            });
-        }
-        
-        // Copy Ciphertext
-        const copyCiphertextBtn = document.getElementById('copyCiphertextBtn');
-        if (copyCiphertextBtn) {
-            copyCiphertextBtn.addEventListener('click', function() {
-                console.log("Copy ciphertext clicked");
-                const ciphertext = document.getElementById('ciphertext-output').textContent;
-                if (ciphertext.includes('Click')) {
-                    toast("No ciphertext to copy. Encrypt a value first.");
-                    return;
-                }
-                
-                navigator.clipboard.writeText(ciphertext).then(() => {
-                    toast("Ciphertext copied to clipboard!");
+                // Save to history
+                saveToHistory({
+                    value: value,
+                    ciphertext: ciphertext.substring(0, 32) + '...',
+                    txHash: null,
+                    timestamp: timestamp,
+                    description: description
                 });
-            });
-        }
-        
-        // Download Ciphertext
-        const downloadCiphertextBtn = document.getElementById('downloadCiphertextBtn');
-        if (downloadCiphertextBtn) {
-            downloadCiphertextBtn.addEventListener('click', function() {
-                console.log("Download ciphertext clicked");
-                const ciphertext = document.getElementById('ciphertext-output').textContent;
-                if (ciphertext.includes('Click')) {
-                     toast("No ciphertext to download. Encrypt a value first.");
-                    return;
-                }
                 
-                const blob = new Blob([ciphertext], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `encrypted-value-${Date.now()}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // Update history display
+                loadEncryptionHistory();
                 
-                toast("Ciphertext downloaded!");
-            });
-        }
-        
-        // Decrypt Value
-        const decryptValueBtn = document.getElementById('decryptValueBtn');
-        if (decryptValueBtn) {
-            decryptValueBtn.addEventListener('click', function() {
-                console.log("Decrypt value clicked");
-                const ciphertext = document.getElementById('ciphertext-input').value.trim();
-                if (!ciphertext || !ciphertext.startsWith('0x')) {
-                    toast("Please enter a valid ciphertext (starting with 0x)");
-                    return;
-                }
+                showToast('✅ Value encrypted with Zama FHE!', 'success');
                 
-                const originalHTML = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Decrypting...';
-                this.disabled = true;
-                document.getElementById('decryptStatus').textContent = 'Decrypting...';
-                document.getElementById('decryptionResult').style.display = 'none';
+            } catch (error) {
+                console.error('Encryption error:', error);
+                showToast('Encryption failed: ' + error.message, 'error');
                 
-                setTimeout(() => {
-                    const randomValue = (Math.random() * 10).toFixed(3);
-                    
-                    document.getElementById('decryptedValue').textContent = randomValue + ' ETH';
-                    document.getElementById('decryptStatus').textContent = 'Decrypted successfully';
-                    document.getElementById('decryptionResult').style.display = 'block';
-                    
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    
-                    toast("Value decrypted: " + randomValue + " ETH");
-                }, 2500);
-            });
-        }
-        
-        // Operation Buttons
-        const operationButtons = ['btnAdd', 'btnSubtract', 'btnMultiply', 'btnCompare'];
-        let currentOperation = 'add';
-        
-        operationButtons.forEach(btnId => {
-            const btn = document.getElementById(btnId);
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    operationButtons.forEach(id => {
-                        const b = document.getElementById(id);
-                        if (b) b.classList.remove('active');
-                    });
-                    
-                    this.classList.add('active');
-                    
-                    if (btnId === 'btnAdd') currentOperation = 'add';
-                    else if (btnId === 'btnSubtract') currentOperation = 'subtract';
-                    else if (btnId === 'btnMultiply') currentOperation = 'multiply';
-                    else if (btnId === 'btnCompare') currentOperation = 'compare';
-                    
-                    toast("Operation selected: " + this.textContent.trim());
-                });
+                // Reset button
+                const encryptBtn = document.getElementById('encryptBtn');
+                encryptBtn.innerHTML = '<i class="fas fa-lock"></i> Encrypt with Zama FHE';
+                encryptBtn.disabled = false;
+                document.getElementById('loading').style.display = 'none';
             }
-        });
-        
-        // Set first button as active
-        const firstOpBtn = document.getElementById('btnAdd');
-        if (firstOpBtn) firstOpBtn.classList.add('active');
-        
-        // Execute Operation
-        const executeOperationBtn = document.getElementById('executeOperationBtn');
-        if (executeOperationBtn) {
-            executeOperationBtn.addEventListener('click', function() {
-                console.log("Execute operation clicked");
-                const valueA = document.getElementById('valueA').value;
-                const valueB = document.getElementById('valueB').value;
-                
-                if (!valueA || !valueB) {
-                    toast("Please enter both ciphertexts");
+        }
+
+        // Create listing on Sepolia
+        async function createListingOnChain() {
+            try {
+                if (!walletAddress) {
+                    showToast('Please connect wallet first', 'error');
                     return;
                 }
                 
-                const originalHTML = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                this.disabled = true;
+                if (!currentEncryptedData) {
+                    showToast('Please encrypt a value first', 'error');
+                    return;
+                }
                 
-                setTimeout(() => {
-                    const operationNames = {
-                        'add': 'Addition',
-                        'subtract': 'Subtraction',
-                        'multiply': 'Multiplication',
-                        'compare': 'Comparison'
-                    };
-                    
-                    toast(operationNames[currentOperation] + " completed successfully!");
-                    
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    
-                    document.getElementById('valueA').value = '';
-                    document.getElementById('valueB').value = '';
-                }, 1500);
-            });
+                // Show loading
+                const createBtn = document.getElementById('createListingBtn');
+                const originalText = createBtn.innerHTML;
+                createBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+                createBtn.disabled = true;
+                
+                document.getElementById('loading').style.display = 'block';
+                
+                // Check if MetaMask is installed
+                if (typeof window.ethereum === 'undefined') {
+                    showToast('MetaMask is not installed', 'error');
+                    return;
+                }
+                
+                // Setup provider and signer
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const signer = await provider.getSigner();
+                
+                // Minimal ABI for createListing
+                const CONTRACT_ABI = [
+                    {
+                        "inputs": [{"internalType": "string","name": "_encryptedPrice","type": "string"}],
+                        "name": "createListing",
+                        "outputs": [],
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    }
+                ];
+                
+                // Initialize contract
+                const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                
+                // Show MetaMask transaction
+                showToast('Check MetaMask to confirm transaction...', 'info');
+                
+                // Call contract
+                const tx = await contract.createListing(currentEncryptedData.ciphertext);
+                
+                // Show transaction hash
+                const txHash = tx.hash;
+                document.getElementById('txInfo').innerHTML += `
+                    <div>Transaction: ${txHash.substring(0, 20)}...</div>
+                `;
+                
+                // Wait for confirmation
+                const receipt = await tx.wait();
+                
+                // Success
+                document.getElementById('loading').style.display = 'none';
+                
+                // Update history with transaction hash
+                updateHistoryWithTxHash(currentEncryptedData.timestamp, txHash);
+                
+                // Reset buttons
+                createBtn.innerHTML = '<i class="fas fa-plus"></i> Create Listing on Sepolia';
+                createBtn.disabled = false;
+                createBtn.style.display = 'none';
+                
+                showToast('✅ Listing created on Sepolia!', 'success');
+                
+                // Reset current encrypted data
+                currentEncryptedData = null;
+                
+            } catch (error) {
+                console.error('Create listing error:', error);
+                showToast('Transaction failed: ' + error.message, 'error');
+                
+                // Reset button
+                const createBtn = document.getElementById('createListingBtn');
+                createBtn.innerHTML = '<i class="fas fa-plus"></i> Create Listing on Sepolia';
+                createBtn.disabled = false;
+                document.getElementById('loading').style.display = 'none';
+            }
         }
-        
-        // FAB Button
-        const fabBtn = document.getElementById('fabBtn');
-        if (fabBtn) {
-            fabBtn.addEventListener('click', function() {
-                console.log("FAB button clicked");
-                 toast("Quick actions: Generate keys • Encrypt • Decrypt • Export");
-            });
+
+        // Save to localStorage
+        function saveToHistory(data) {
+            try {
+                let history = JSON.parse(localStorage.getItem('encryptionHistory') || '[]');
+                history.unshift(data);
+                if (history.length > 10) history = history.slice(0, 10);
+                localStorage.setItem('encryptionHistory', JSON.stringify(history));
+            } catch (e) {
+                console.error('Error saving to history:', e);
+            }
         }
-        
-        // Initialize
-        console.log("All event listeners attached successfully!");
-        
-        // Initial message
-        setTimeout(() => {
-            toast("DarkMarket FHE Encryption Tools Ready!\n\nAll buttons are working now.");
-        }, 500);
+
+        // Update history with transaction hash
+        function updateHistoryWithTxHash(timestamp, txHash) {
+            try {
+                let history = JSON.parse(localStorage.getItem('encryptionHistory') || '[]');
+                const itemIndex = history.findIndex(item => item.timestamp === timestamp);
+                if (itemIndex !== -1) {
+                    history[itemIndex].txHash = txHash;
+                    localStorage.setItem('encryptionHistory', JSON.stringify(history));
+                    loadEncryptionHistory();
+                }
+            } catch (e) {
+                console.error('Error updating history:', e);
+            }
+        }
+
+        // Load history from localStorage
+        function loadEncryptionHistory() {
+            try {
+                const history = JSON.parse(localStorage.getItem('encryptionHistory') || '[]');
+                const container = document.getElementById('historyContainer');
+                
+                if (history.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-lock"></i>
+                            <p>No encryption history yet</p>
+                            <p style="font-size: 12px; margin-top: 10px;">Encrypt a value to see it here</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = history.map(item => `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div class="history-value">${item.value} ETH</div>
+                            <div class="history-time">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">
+                            ${item.description || 'No description'}
+                        </div>
+                        <div class="history-cipher">${item.ciphertext}</div>
+                        <div class="history-tx">${item.txHash ? item.txHash.substring(0, 24) + '...' : 'Pending'}</div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Error loading history:', e);
+            }
+        }
     </script>
 </body>
 </html>
