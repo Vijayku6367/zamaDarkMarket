@@ -1,0 +1,76 @@
+<nav class="glass-nav">
+    <div class="nav-container">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-user-secret"></i>
+            </div>
+            <div class="logo-text">
+                <span class="logo-main">DarkMarket</span>
+                <span class="logo-sub">FHE</span>
+            </div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="marketplace.html" class="nav-link">
+                <i class="fas fa-store"></i>
+                <span>Marketplace</span>
+            </a>
+            <a href="encrypt.html" class="nav-link">
+                <i class="fas fa-lock"></i>
+                <span>Encrypt</span>
+            </a>
+            <a href="mybids.html" class="nav-link">
+                <i class="fas fa-gavel"></i>
+                <span>My Bids</span>
+            </a>
+            <a href="docs.html" class="nav-link">
+                <i class="fas fa-book"></i>
+                <span>Docs</span>
+            </a>
+        </div>
+        
+        <div class="nav-actions">
+            <button class="btn-connect-wallet" id="connectWallet">
+                <i class="fas fa-wallet"></i>
+                <span>Connect Wallet</span>
+                <div class="connection-indicator"></div>
+            </button>
+            
+            <div class="user-menu">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+// Active link highlighting
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop();
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (currentPage === linkHref || 
+            (currentPage === '' && linkHref === 'index.html')) {
+            link.classList.add('active');
+        }
+    });
+    
+    // Wallet connection
+    const connectBtn = document.getElementById('connectWallet');
+    if (connectBtn) {
+        connectBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-check"></i> Connected';
+            this.classList.add('connected');
+            this.querySelector('.connection-indicator').style.background = '#10b981';
+        });
+    }
+});
+</script>

@@ -1,0 +1,73 @@
+<div class="product-card">
+    <div class="product-badge">NFT</div>
+    <div class="product-image">
+        <div class="image-placeholder">
+            <i class="fas fa-image"></i>
+        </div>
+        <div class="encrypted-overlay">
+            <i class="fas fa-lock"></i>
+            <span>Encrypted Price</span>
+        </div>
+    </div>
+    <div class="product-content">
+        <h3 class="product-title">CryptoPunk #9999</h3>
+        <p class="product-description">Rare alien CryptoPunk with exclusive traits</p>
+        
+        <div class="product-details">
+            <div class="detail">
+                <span class="detail-label">Seller</span>
+                <span class="detail-value encrypted">0x8f3a...c4b2</span>
+            </div>
+            <div class="detail">
+                <span class="detail-label">Time Left</span>
+                <span class="detail-value">2d 14h</span>
+            </div>
+        </div>
+        
+        <div class="product-price">
+            <div class="price-label">Encrypted Price</div>
+            <div class="price-value">
+                <i class="fas fa-lock"></i>
+                <span>0x3a7d186c8f25591e...</span>
+            </div>
+        </div>
+        
+        <div class="product-actions">
+            <button class="btn-outline btn-small view-btn">
+                <i class="fas fa-eye"></i>
+                View
+            </button>
+            <button class="btn-primary btn-small bid-btn">
+                <i class="fas fa-gavel"></i>
+                Place Bid
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Product card interaction
+document.addEventListener('DOMContentLoaded', function() {
+    const productCards = document.querySelectorAll('.product-card');
+    
+    productCards.forEach(card => {
+        // View button
+        const viewBtn = card.querySelector('.view-btn');
+        if (viewBtn) {
+            viewBtn.addEventListener('click', function() {
+                const title = card.querySelector('.product-title').textContent;
+                alert(`Viewing: ${title}`);
+            });
+        }
+        
+        // Bid button
+        const bidBtn = card.querySelector('.bid-btn');
+        if (bidBtn) {
+            bidBtn.addEventListener('click', function() {
+                const title = card.querySelector('.product-title').textContent;
+                alert(`Placing bid on: ${title}`);
+            });
+        }
+    });
+});
+</script>

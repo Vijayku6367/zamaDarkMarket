@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bids | DarkMarket FHE</title>
+
+    <!-- Icons + Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* 🔥 Premium Yellow Theme */
+            --yellow: #FFD700;
+            --yellow-glow: #FFED4E;
+            --yellow-dark: #E6C300;
+            --yellow-light: #FFF9C4;
+            
+            /* 🌙 Dark Theme */
+            --dark-bg: #0A0A0F;
+            --darker: #050508;
+            --card-bg: rgba(30, 30, 40, 0.6);
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-heavy: rgba(15, 15, 25, 0.8);
+            --border: rgba(255, 215, 0, 0.15);
+            --white: #FFFFFF;
+            --gray: #A0A0C0;
+            --gray-light: #C5C5E0;
+            
+            /* 🎨 Premium Radius & Shadows */
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --shadow-yellow: 0 0 30px rgba(255, 215, 0, 0.3);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--white);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* 🎯 Background Effects */
+        .bg-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.03) 0%, transparent 50%),
+                linear-gradient(45deg, var(--darker) 0%, var(--dark-bg) 100%);
+            overflow: hidden;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { transform: translateY(0); }
+            to { transform: translateY(50px); }
+        }
+
+        /* 🌟 PREMIUM NAVBAR */
+        .premium-nav {
+            width: 92%;
+            max-width: 1400px;
+            padding: 10px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0px;
+            left: 3%;
+            transform: translateX(-50%);
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            z-index: 9999;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .premium-nav:hover {
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: var(--shadow-yellow), var(--shadow-lg);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-glow));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 20px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .logo-main {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gray-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--yellow);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none !important;
+            }
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            color: var(--white);
+        }
+
+        .nav-link.active {
+            color: var(--yellow);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+            border-radius: 2px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .wallet-btn span {
+                display: none;
+            }
+            
+            .wallet-btn {
+                padding: 10px 15px !important;
+                width: auto !important;
+            }
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: var(--glass-heavy);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            z-index: 9998;
+            box-shadow: var(--shadow-lg);
+            animation: slideDown 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .mobile-nav-link:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--yellow);
+        }
+
+        .mobile-nav-link.active {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--yellow);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .wallet-btn {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            color: #000;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            height: 42px;
+            min-width: fit-content;
+            font-size: 14px;
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .wallet-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .wallet-btn:hover::before {
+            left: 100%;
+        }
+
+        /* 🏆 MY BIDS HEADER */
+        .mybids-header {
+            margin-top: 180px;
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .mybids-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--yellow);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .mybids-title {
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--white), var(--yellow-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .mybids-subtitle {
+            color: var(--gray);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        /* 📊 BIDS STATS */
+        .bids-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .bid-stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 24px 32px;
+            min-width: 200px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .bid-stat-card:hover {
+            border-color: var(--yellow);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-yellow);
+        }
+
+        .bid-stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bid-stat-label {
+            color: var(--gray);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 🎯 TABS NAVIGATION */
+        .tabs-navigation {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px 24px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--gray);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab-btn:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            color: #000;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* 📦 BIDS CONTENT */
+        .bids-content {
+            max-width: 1400px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 🃏 BID CARD */
+        .bid-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .bid-card:hover {
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-yellow);
+        }
+
+        .bid-card-header {
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, 
+                rgba(255, 215, 0, 0.05), 
+                transparent
+            );
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bid-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .bid-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--yellow);
+        }
+
+        .bid-details h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--white);
+        }
+
+        .bid-details p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .bid-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status-winning {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--yellow);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .status-expired {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        /* 📊 BID METRICS */
+        .bid-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .metric-label {
+            color: var(--gray);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .metric-value.encrypted {
+            color: var(--yellow);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* 🎯 BID ACTIONS */
+        .bid-actions {
+            padding: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .action-btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        .action-btn-outline:hover {
+            border-color: var(--yellow);
+            color: var(--yellow);
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .action-btn-primary {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            border: none;
+            color: #000;
+        }
+
+        .action-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        /* 🏆 WINNING BID SPECIAL CARD */
+        .winning-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.1), 
+                rgba(255, 215, 0, 0.05)
+            );
+            border: 2px solid var(--yellow);
+            position: relative;
+        }
+
+        .winning-badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            color: #000;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 📱 EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: rgba(255, 215, 0, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .empty-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--white);
+        }
+
+        .empty-description {
+            color: var(--gray);
+            font-size: 16px;
+            margin-bottom: 32px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 📈 BID HISTORY TABLE */
+        .history-table {
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .history-table thead {
+            background: linear-gradient(90deg, 
+                rgba(255, 215, 0, 0.1), 
+                transparent
+            );
+        }
+
+        .history-table th {
+            padding: 20px;
+            text-align: left;
+            color: var(--yellow);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .history-table tr:hover {
+            background: rgba(255, 215, 0, 0.03);
+        }
+
+        .history-table .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ✨ FAB */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6);
+        }
+
+        /* 📱 Responsive Design */
+        @media (max-width: 768px) {
+            .mybids-title {
+                font-size: 48px;
+            }
+            
+            .bids-stats {
+                gap: 20px;
+            }
+            
+            .bid-stat-card {
+                min-width: 150px;
+                padding: 20px;
+            }
+            
+            .bid-stat-value {
+                font-size: 28px;
+            }
+            
+            .tabs-container {
+                flex-direction: column;
+            }
+            
+            .bid-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .bid-actions {
+                flex-direction: column;
+            }
+            
+            .bid-card-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .bid-status {
+                align-self: flex-start;
+            }
+            
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* 🌈 Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--yellow-glow), var(--yellow));
+        }
+
+        /* ✨ Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 🌟 Background Effects -->
+    <div class="bg-effects">
+        <div class="grid-pattern"></div>
+    </div>
+
+    <!-- 🎯 Premium Navbar with Hamburger Menu -->
+    <nav class="premium-nav floating">
+        <a href="index.html" class="nav-brand">
+            <div class="logo-icon">
+                <i class="fas fa-user-secret"></i>
+            </div>
+            <div class="logo-text">
+                <div class="logo-main">DarkMarket</div>
+                <div class="logo-sub">FHE</div>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="marketplace.html" class="nav-link">
+                <i class="fas fa-store"></i>
+                <span>Marketplace</span>
+            </a>
+            <a href="encrypt.html" class="nav-link">
+                <i class="fas fa-lock"></i>
+                <span>Encrypt</span>
+            </a>
+            <a href="mybids.html" class="nav-link active">
+                <i class="fas fa-gavel"></i>
+                <span>My Bids</span>
+            </a>
+            <a href="docs.html" class="nav-link">
+                <i class="fas fa-book"></i>
+                <span>Docs</span>
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Wallet Button -->
+            <button class="wallet-btn" id="connectWallet">
+                <i class="fas fa-wallet"></i>
+                <span>Connect</span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-nav-links">
+                <a href="index.html" class="mobile-nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="marketplace.html" class="mobile-nav-link">
+                    <i class="fas fa-store"></i>
+                    <span>Marketplace</span>
+                </a>
+                <a href="encrypt.html" class="mobile-nav-link">
+                    <i class="fas fa-lock"></i>
+                    <span>Encrypt</span>
+                </a>
+                <a href="mybids.html" class="mobile-nav-link active">
+                    <i class="fas fa-gavel"></i>
+                    <span>My Bids</span>
+                </a>
+                <a href="docs.html" class="mobile-nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Docs</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🏆 My Bids Header -->
+    <section class="mybids-header">
+        <div class="mybids-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Your Encrypted Bids</span>
+        </div>
+        
+        <h1 class="mybids-title">My Bids Dashboard</h1>
+        
+        <p class="mybids-subtitle">
+            Track and manage all your encrypted bids in one place.
+            Monitor active bids, winning auctions, and bid history.
+        </p>
+
+        <div class="bids-stats">
+            <div class="bid-stat-card">
+                <div class="bid-stat-value">3</div>
+                <div class="bid-stat-label">Active Bids</div>
+            </div>
+            <div class="bid-stat-card">
+                <div class="bid-stat-value">12</div>
+                <div class="bid-stat-label">Total Bids</div>
+            </div>
+            <div class="bid-stat-card">
+                <div class="bid-stat-value">2</div>
+                <div class="bid-stat-label">Winning Bids</div>
+            </div>
+            <div class="bid-stat-card">
+                <div class="bid-stat-value">5.2 ETH</div>
+                <div class="bid-stat-label">Total Value</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🎯 Tabs Navigation -->
+    <div class="tabs-navigation">
+        <div class="tabs-container">
+            <button class="tab-btn active" data-tab="active">
+                <i class="fas fa-bolt"></i>
+                Active Bids
+            </button>
+            <button class="tab-btn" data-tab="winning">
+                <i class="fas fa-crown"></i>
+                Winning
+            </button>
+            <button class="tab-btn" data-tab="history">
+                <i class="fas fa-history"></i>
+                History
+            </button>
+            <button class="tab-btn" data-tab="expired">
+                <i class="fas fa-clock"></i>
+                Expired
+            </button>
+        </div>
+    </div>
+
+    <!-- 📦 Bids Content -->
+    <div class="bids-content">
+        <!-- Active Bids Tab -->
+        <div class="tab-content active" id="activeTab">
+            <h2 style="margin-bottom: 30px; color: var(--white); font-size: 28px;">Active Encrypted Bids</h2>
+            
+            <!-- Bid Card 1 -->
+            <div class="bid-card">
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>CryptoPunk #9999</h3>
+                            <p>NFT Collection • 2 days 14 hours remaining</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-active">Active</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Your Encrypted Bid</div>
+                        <div class="metric-value encrypted">0x3a7d186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Current Highest</div>
+                        <div class="metric-value encrypted">0x8b4e186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Time Remaining</div>
+                        <div class="metric-value">2d 14h 32m</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-outline" onclick="viewListing(1)">
+                        <i class="fas fa-eye"></i>
+                        View Listing
+                    </button>
+                    <button class="action-btn action-btn-primary" onclick="increaseBid(1)">
+                        <i class="fas fa-plus-circle"></i>
+                        Increase Bid
+                    </button>
+                    <button class="action-btn action-btn-outline" style="color: #f44336;" onclick="cancelBid(1)">
+                        <i class="fas fa-times"></i>
+                        Cancel Bid
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bid Card 2 -->
+            <div class="bid-card">
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>Virtual Real Estate</h3>
+                            <p>Decentraland • 1 day 6 hours remaining</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-active">Active</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Your Encrypted Bid</div>
+                        <div class="metric-value encrypted">0xf2c5186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Listing Price</div>
+                        <div class="metric-value encrypted">0x9e8a186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Time Remaining</div>
+                        <div class="metric-value">1d 6h 15m</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-outline" onclick="viewListing(2)">
+                        <i class="fas fa-eye"></i>
+                        View Listing
+                    </button>
+                    <button class="action-btn action-btn-primary" onclick="increaseBid(2)">
+                        <i class="fas fa-plus-circle"></i>
+                        Increase Bid
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bid Card 3 -->
+            <div class="bid-card">
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>GPU Server Rental</h3>
+                            <p>Cloud Computing • 5 hours remaining</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-active">Active</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Your Encrypted Bid</div>
+                        <div class="metric-value encrypted">0x1b3f586c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Minimum Bid</div>
+                        <div class="metric-value encrypted">0x4c7a186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Time Remaining</div>
+                        <div class="metric-value">5h 42m</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-outline" onclick="viewListing(3)">
+                        <i class="fas fa-eye"></i>
+                        View Listing
+                    </button>
+                    <button class="action-btn action-btn-primary" onclick="increaseBid(3)">
+                        <i class="fas fa-plus-circle"></i>
+                        Increase Bid
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Winning Bids Tab -->
+        <div class="tab-content" id="winningTab">
+            <h2 style="margin-bottom: 30px; color: var(--white); font-size: 28px;">Winning Bids</h2>
+            
+            <!-- Winning Card 1 -->
+            <div class="bid-card winning-card">
+                <div class="winning-badge">
+                    <i class="fas fa-trophy"></i>
+                    YOU WON!
+                </div>
+                
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>Digital Art NFT</h3>
+                            <p>AI Generated Art • Won 2 hours ago</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-winning">Winner</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Winning Bid</div>
+                        <div class="metric-value encrypted">0x3a7d186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Decrypted Amount</div>
+                        <div class="metric-value">2.5 ETH</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Won At</div>
+                        <div class="metric-value">2 hours ago</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-primary" onclick="completePurchase(1)">
+                        <i class="fas fa-shopping-cart"></i>
+                        Complete Purchase
+                    </button>
+                    <button class="action-btn action-btn-outline" onclick="decryptBid(1)">
+                        <i class="fas fa-unlock"></i>
+                        Decrypt Bid
+                    </button>
+                </div>
+            </div>
+
+            <!-- Winning Card 2 -->
+            <div class="bid-card winning-card">
+                <div class="winning-badge">
+                    <i class="fas fa-trophy"></i>
+                    YOU WON!
+                </div>
+                
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>Whitelist Spot</h3>
+                            <p>IDO Launch • Won 1 day ago</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-winning">Winner</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Winning Bid</div>
+                        <div class="metric-value encrypted">0x9b2f186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Decrypted Amount</div>
+                        <div class="metric-value">1.8 ETH</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Won At</div>
+                        <div class="metric-value">1 day ago</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-primary" onclick="completePurchase(2)">
+                        <i class="fas fa-shopping-cart"></i>
+                        Complete Purchase
+                    </button>
+                    <button class="action-btn action-btn-outline" onclick="decryptBid(2)">
+                        <i class="fas fa-unlock"></i>
+                        Decrypt Bid
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State for No More Winning Bids -->
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="empty-title">No More Winning Bids</h3>
+                <p class="empty-description">
+                    You've viewed all your winning bids. Place more bids to increase your chances!
+                </p>
+                <button class="action-btn action-btn-primary" onclick="goToMarketplace()">
+                    <i class="fas fa-store"></i>
+                    Go to Marketplace
+                </button>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div class="tab-content" id="historyTab">
+            <h2 style="margin-bottom: 30px; color: var(--white); font-size: 28px;">Bid History</h2>
+            
+            <!-- History Table -->
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Bid Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="bid-icon" style="width: 36px; height: 36px; font-size: 16px;">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Gaming NFT</div>
+                                    <div style="font-size: 12px; color: var(--gray);">#4567</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="metric-value encrypted">0x8e5d186c8f25591e...</td>
+                        <td>
+                            <span class="status-badge" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50; border: 1px solid rgba(76, 175, 80, 0.3);">
+                                Won
+                            </span>
+                        </td>
+                        <td>2024-03-10</td>
+                        <td>
+                            <button class="action-btn-outline" style="padding: 8px 16px;" onclick="viewHistoryDetails(1)">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="bid-icon" style="width: 36px; height: 36px; font-size: 16px;">
+                                    <i class="fas fa-music"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Music Album</div>
+                                    <div style="font-size: 12px; color: var(--gray);">Limited Edition</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="metric-value encrypted">0x3f9a186c8f25591e...</td>
+                        <td>
+                            <span class="status-badge" style="background: rgba(244, 67, 54, 0.1); color: #f44336; border: 1px solid rgba(244, 67, 54, 0.3);">
+                                Outbid
+                            </span>
+                        </td>
+                        <td>2024-03-08</td>
+                        <td>
+                            <button class="action-btn-outline" style="padding: 8px 16px;" onclick="viewHistoryDetails(2)">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="bid-icon" style="width: 36px; height: 36px; font-size: 16px;">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Video Course</div>
+                                    <div style="font-size: 12px; color: var(--gray);">Access License</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="metric-value encrypted">0x7b1c186c8f25591e...</td>
+                        <td>
+                            <span class="status-badge" style="background: rgba(255, 215, 0, 0.1); color: var(--yellow); border: 1px solid rgba(255, 215, 0, 0.3);">
+                                Active
+                            </span>
+                        </td>
+                        <td>2024-03-05</td>
+                        <td>
+                            <button class="action-btn-outline" style="padding: 8px 16px;" onclick="viewHistoryDetails(3)">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="bid-icon" style="width: 36px; height: 36px; font-size: 16px;">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">Rare Book</div>
+                                    <div style="font-size: 12px; color: var(--gray);">First Edition</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="metric-value encrypted">0x2d8e186c8f25591e...</td>
+                        <td>
+                            <span class="status-badge" style="background: rgba(33, 150, 243, 0.1); color: #2196F3; border: 1px solid rgba(33, 150, 243, 0.3);">
+                                Cancelled
+                            </span>
+                        </td>
+                        <td>2024-03-01</td>
+                        <td>
+                            <button class="action-btn-outline" style="padding: 8px 16px;" onclick="viewHistoryDetails(4)">
+                                View Details
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Export History Button -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="action-btn action-btn-outline" onclick="exportHistory()">
+                    <i class="fas fa-download"></i>
+                    Export History (CSV)
+                </button>
+            </div>
+        </div>
+
+        <!-- Expired Bids Tab -->
+        <div class="tab-content" id="expiredTab">
+            <h2 style="margin-bottom: 30px; color: var(--white); font-size: 28px;">Expired Bids</h2>
+            
+            <!-- Expired Bid Card 1 -->
+            <div class="bid-card">
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>Designer Hoodie</h3>
+                            <p>Limited Merch • Expired 3 days ago</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-expired">Expired</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Your Bid</div>
+                        <div class="metric-value encrypted">0x5c9f186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Winning Bid</div>
+                        <div class="metric-value encrypted">0x8e4d186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Expired</div>
+                        <div class="metric-value">3 days ago</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-outline" onclick="viewExpiredListing(1)">
+                        <i class="fas fa-eye"></i>
+                        View Listing
+                    </button>
+                    <button class="action-btn action-btn-outline" onclick="rebidItem(1)">
+                        <i class="fas fa-redo"></i>
+                        Rebid Item
+                    </button>
+                </div>
+            </div>
+
+            <!-- Expired Bid Card 2 -->
+            <div class="bid-card">
+                <div class="bid-card-header">
+                    <div class="bid-info">
+                        <div class="bid-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div class="bid-details">
+                            <h3>Concert Ticket</h3>
+                            <p>VIP Access • Expired 1 week ago</p>
+                        </div>
+                    </div>
+                    <span class="bid-status status-expired">Expired</span>
+                </div>
+                
+                <div class="bid-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">Your Bid</div>
+                        <div class="metric-value encrypted">0xa3b2186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Winning Bid</div>
+                        <div class="metric-value encrypted">0x1f7c186c8f25591e...</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Expired</div>
+                        <div class="metric-value">1 week ago</div>
+                    </div>
+                </div>
+                
+                <div class="bid-actions">
+                    <button class="action-btn action-btn-outline" onclick="viewExpiredListing(2)">
+                        <i class="fas fa-eye"></i>
+                        View Listing
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State for No More Expired Bids -->
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="empty-title">No More Expired Bids</h3>
+                <p class="empty-description">
+                    You've viewed all your expired bids. Keep bidding to stay active in auctions!
+                </p>
+                <button class="action-btn action-btn-primary" onclick="goToMarketplace()">
+                    <i class="fas fa-store"></i>
+                    Find New Listings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✨ Floating Action Button -->
+    <div class="fab" onclick="placeNewBid()">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- 📜 JavaScript -->
+    <script>
+        // Tab Switching Functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Show corresponding tab content
+                const tabId = btn.getAttribute('data-tab');
+                const tabContent = document.getElementById(tabId + 'Tab');
+                if (tabContent) {
+                    tabContent.classList.add('active');
+                }
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Wallet Connection
+        document.getElementById('connectWallet').addEventListener('click', async () => {
+            try {
+                // Mock wallet connection
+                const walletBtn = document.getElementById('connectWallet');
+                walletBtn.innerHTML = '<i class="fas fa-wallet"></i><span>0x1a2b...3c4d</span>';
+                walletBtn.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                
+                // Show success notification
+                showNotification('Wallet connected successfully!', 'success');
+            } catch (error) {
+                showNotification('Failed to connect wallet', 'error');
+            }
+        });
+
+        // Mock Functions for Actions
+        function viewListing(id) {
+            showNotification(`Redirecting to listing #${id}...`, 'info');
+            // In real app: window.location.href = `/listing/${id}`;
+        }
+
+        function increaseBid(id) {
+            showNotification(`Opening bid increase for item #${id}...`, 'info');
+            // In real app: open modal for increasing bid
+        }
+
+        function cancelBid(id) {
+            if (confirm('Are you sure you want to cancel this bid?')) {
+                showNotification(`Bid #${id} cancelled successfully`, 'success');
+                // In real app: make API call to cancel bid
+            }
+        }
+
+        function completePurchase(id) {
+            showNotification(`Completing purchase for item #${id}...`, 'info');
+            // In real app: open purchase confirmation modal
+        }
+
+        function decryptBid(id) {
+            showNotification(`Decrypting bid #${id}...`, 'info');
+            // In real app: decrypt the bid using FHE
+        }
+
+        function viewHistoryDetails(id) {
+            showNotification(`Showing details for history item #${id}`, 'info');
+        }
+
+        function viewExpiredListing(id) {
+            showNotification(`Viewing expired listing #${id}`, 'info');
+        }
+
+        function rebidItem(id) {
+            showNotification(`Starting rebid process for item #${id}`, 'info');
+        }
+
+        function exportHistory() {
+            showNotification('Exporting bid history as CSV...', 'info');
+            // In real app: generate and download CSV
+        }
+
+        function goToMarketplace() {
+            showNotification('Redirecting to marketplace...', 'info');
+            window.location.href = 'marketplace.html';
+        }
+
+        function placeNewBid() {
+            showNotification('Opening new bid form...', 'info');
+            // In real app: open new bid modal
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Style the notification
+            notification.style.cssText = `
+                position: fixed;
+                top: 120px;
+                right: 30px;
+                background: var(--card-bg);
+                backdrop-filter: blur(20px);
+                border: 1px solid ${type === 'success' ? 'rgba(76, 175, 80, 0.3)' : type === 'error' ? 'rgba(244, 67, 54, 0.3)' : 'rgba(255, 215, 0, 0.3)'};
+                color: var(--white);
+                padding: 15px 20px;
+                border-radius: var(--radius-md);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+                box-shadow: var(--shadow-lg);
+                min-width: 300px;
+            `;
+            
+            // Add animation keyframes
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add tooltips to encrypted values
+            const encryptedValues = document.querySelectorAll('.metric-value.encrypted');
+            encryptedValues.forEach(value => {
+                value.title = 'Click to copy encrypted value';
+                value.style.cursor = 'pointer';
+                value.addEventListener('click', (e) => {
+                    navigator.clipboard.writeText(e.target.textContent);
+                    showNotification('Encrypted value copied to clipboard!', 'success');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
