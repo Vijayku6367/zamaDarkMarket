@@ -32,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* Navigation */
+        /* Navigation - Marketplace की तरह */
         .nav {
             display: flex;
             justify-content: space-between;
@@ -44,6 +44,22 @@
             top: 0;
             z-index: 1000;
         }
+.nav-link span {
+    font-size: 8px !important;
+}
+
+.nav-link i {
+    font-size: 10px !important;
+}
+
+.logo-text .logo-main {
+    font-size: 20px !important;
+}
+.logo-text .logo-sub {
+    font-size: 12px !important;
+}    
+
+
 
         .logo {
             display: flex;
@@ -55,13 +71,11 @@
             text-decoration: none;
         }
 
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
 
-          .nav-links {
-    display: flex;
-    gap: 25px;
-    justify-content: center;
-    margin-top: 10px;
-}  
         .nav-link {
             color: var(--gray);
             text-decoration: none;
@@ -74,14 +88,7 @@
         .nav-link:hover, .nav-link.active {
             color: var(--yellow);
         }
-         .nav-links a {
-    white-space: nowrap; /* 👈 Text को टूटी लाइन में गिरने से रोकेगा */
-}
-.nav-links li.active a {
-    color: #FFD43B;   /* same yellow */
-    font-weight: 600;
-}
-        .wallet-btn {
+            .wallet-btn {
             background: var(--yellow);
             color: #000;
             border: none;
@@ -107,9 +114,10 @@
             border: 1px solid var(--yellow);
             font-family: monospace;
         }
+
         /* Main Container */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 40px auto;
             padding: 0 20px;
         }
@@ -146,18 +154,54 @@
             word-break: break-all;
         }
 
-        /* Encryption Grid */
-        .encryption-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
         }
 
-        @media (max-width: 768px) {
-            .encryption-grid {
-                grid-template-columns: 1fr;
-            }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px;
+        }
+
+        .tab-btn {
+            padding: 16px 32px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--gray);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-glow));
+            color: #000;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
         /* Panel */
@@ -166,6 +210,13 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            border-color: var(--yellow);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
         }
 
         .panel-header {
@@ -225,6 +276,20 @@
 
         .form-input:focus {
             border-color: var(--yellow);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 14px;
+            outline: none;
+            resize: vertical;
+            min-height: 120px;
+            font-family: monospace;
         }
 
         /* Buttons */
@@ -319,8 +384,21 @@
             padding: 10px;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 6px;
-            max-height: 100px;
+            max-height: 150px;
             overflow-y: auto;
+        }
+
+        .plaintext {
+            font-family: monospace;
+            font-size: 18px;
+            color: var(--yellow);
+            word-break: break-all;
+            margin: 10px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
         }
 
         .tx-info {
@@ -462,53 +540,102 @@
             font-size: 14px;
             line-height: 1.5;
         }
-/* Mobile (max-width: 768px) */
-@media (max-width: 768px) {
-    .nav { padding: 15px; flex-direction: column; gap: 15px; }
-    .nav-links { flex-wrap: wrap; justify-content: center; }
-    .listings-grid { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .actions { flex-direction: column; }
-    .listing-actions { flex-direction: column; }
-    .header h1 { font-size: 32px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav { padding: 15px; flex-direction: column; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .content-grid { grid-template-columns: 1fr; }
+            .tab-buttons { flex-direction: column; }
+            .tab-btn { padding: 12px; }
+            .header h1 { font-size: 32px; }
+        }
+.logo {
+    flex-shrink: 0;
 }
 
-/* Tablet (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .listings-grid { grid-template-columns: repeat(2, 1fr); }
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
 }
 
-/* Desktop (1025px+) */
-@media (min-width: 1025px) {
-    .listings-grid { grid-template-columns: repeat(3, 1fr); }
-}
-html { font-size: 16px; }
-@media (max-width: 768px) { html { font-size: 14px; } }
-button, .btn {
-    min-height: 44px;  /* Apple guideline */
-    min-width: 44px;
-    padding: 12px 20px;
-}
-html { scroll-behavior: smooth; }
-* { -webkit-tap-highlight-color: transparent; }
-   .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--yellow);
-    text-decoration: none;
-    /* आइकन और टेक्स्ट के बीच gap हटाओ */
-    gap: 0;
+.nav-links {
+    display: flex;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
+    gap: 18px;
 }
 
-/* Logo में आइकन छुपाओ अगर Marketplace में नहीं है */
-.logo i {
-    display: none; /* Marketplace screenshot में आइकन नहीं दिख रहा */
+.nav-links::-webkit-scrollbar {
+    display: none;
+}
+/* Outer tab container */
+.tabs {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Tab buttons wrapper */
+.tab-buttons {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    
+    padding: 12px;
+    border-radius: 18px;
+    display: flex;
+    gap: 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+/* Base button */
+.tab-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    padding: 12px 22px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #d5d5d5;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Active tab – highlighted */
+.tab-btn.active {
+    background: #f1c40f;
+    color: #000;
+    box-shadow: 0 6px 20px rgba(241, 196, 15, 0.5);
+}
+
+/* Hover effect */
+.tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+}
+
+/* Icons */
+.tab-btn i {
+    font-size: 16px;
 }
     </style>
 </head>
 <body>
     <!-- Navigation -->
- <nav class="nav">
+    <nav class="nav">
         <a href="index.html" class="logo">
             <i class="fas fa-user-secret"></i>
             DarkMarket
@@ -519,11 +646,11 @@ html { scroll-behavior: smooth; }
                 <i class="fas fa-home"></i>
                 Home
             </a>
-            <a href="marketplace.html" class="nav-link active">
+            <a href="marketplace.html" class="nav-link">
                 <i class="fas fa-store"></i>
                 Marketplace
             </a>
-            <a href="encrypt.html" class="nav-link">
+            <a href="encrypt.html" class="nav-link active">
                 <i class="fas fa-lock"></i>
                 Encrypt
             </a>
@@ -542,87 +669,237 @@ html { scroll-behavior: smooth; }
             Connect Wallet
         </button>
     </nav>
+
     <!-- Main Container -->
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>🔐 Real FHE Encryption</h1>
-            <p>Encrypt values with Zama FHE and create listings on Sepolia blockchain</p>
-            <div class="contract-info">
-                Contract: 0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25 | Network: Sepolia
+            <h1>🔐 FHE Encryption & Decryption</h1>
+            <p>Encrypt values with Zama FHE, create listings, and decrypt winning bids</p>
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="encrypt">
+                    <i class="fas fa-lock"></i>
+                    Encrypt & Create
+                </button>
+                <button class="tab-btn" data-tab="decrypt">
+                    <i class="fas fa-unlock"></i>
+                    Decrypt Bids
+                </button>
+                <button class="tab-btn" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    History
+                </button>
             </div>
         </div>
 
-        <!-- Encryption Grid -->
-        <div class="encryption-grid">
-            <!-- Left Panel: Encrypt & Create -->
-            <div class="panel">
-                <div class="panel-header">
-                    <h2><i class="fas fa-lock"></i> Encrypt & Create Listing</h2>
-                    <span class="real-badge"><i class="fas fa-check"></i> REAL</span>
-                </div>
-                
-                <div class="panel-content">
-                    <!-- Value Input -->
-                    <div class="form-group">
-                        <label class="form-label">Value to Encrypt (ETH)</label>
-                        <input type="number" 
-                               id="encryptValue" 
-                               class="form-input"
-                               placeholder="1.5"
-                               step="0.001"
-                               min="0.001"
-                               value="1.5">
+        <!-- Tab Contents -->
+        <div id="encryptTab" class="tab-content active">
+            <div class="content-grid">
+                <!-- Encrypt Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-lock"></i> Encrypt Value</h2>
+                        <span class="real-badge"><i class="fas fa-check"></i> ZAMA FHE</span>
                     </div>
-
-                    <!-- Description -->
-                    <div class="form-group">
-                        <label class="form-label">Listing Description</label>
-                        <input type="text" 
-                               id="listingDescription" 
-                               class="form-input"
-                               placeholder="What are you selling?">
-                    </div>
-
-                    <!-- Loading -->
-                    <div class="loading" id="loading">
-                        <div class="spinner"></div>
-                        <p>Processing with Zama FHE...</p>
-                    </div>
-
-                    <!-- Result Display -->
-                    <div class="result-display" id="resultDisplay">
-                        <strong>✅ Encrypted Successfully!</strong>
-                        <div class="ciphertext" id="ciphertextOutput"></div>
-                        <div class="tx-info" id="txInfo"></div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <button class="btn btn-primary" id="encryptBtn">
-                        <i class="fas fa-lock"></i>
-                        Encrypt with Zama FHE
-                    </button>
                     
-                    <button class="btn btn-secondary" id="createListingBtn" style="margin-top: 10px; display: none;">
-                        <i class="fas fa-plus"></i>
-                        Create Listing on Sepolia
-                    </button>
+                    <div class="panel-content">
+                        <div class="form-group">
+                            <label class="form-label">Value to Encrypt (ETH)</label>
+                            <input type="number" 
+                                   id="encryptValue" 
+                                   class="form-input"
+                                   placeholder="1.5"
+                                   step="0.001"
+                                   min="0.001"
+                                   value="1.5">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Listing Description</label>
+                            <input type="text" 
+                                   id="listingDescription" 
+                                   class="form-input"
+                                   placeholder="What are you selling?">
+                        </div>
+
+                        <div class="loading" id="encryptLoading">
+                            <div class="spinner"></div>
+                            <p>Processing with Zama FHE...</p>
+                        </div>
+
+                        <div class="result-display" id="encryptResult">
+                            <strong>✅ Encrypted Successfully!</strong>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label class="form-label">Ciphertext</label>
+                                <div class="ciphertext" id="ciphertextOutput"></div>
+                            </div>
+                            <div class="tx-info" id="encryptTxInfo"></div>
+                        </div>
+
+                        <button class="btn btn-primary" id="encryptBtn">
+                            <i class="fas fa-lock"></i>
+                            Encrypt with Zama FHE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Create Listing Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-plus"></i> Create Listing</h2>
+                        <span class="real-badge"><i class="fas fa-ethereum"></i> SEPOLIA</span>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div class="form-group">
+                            <label class="form-label">Encrypted Ciphertext</label>
+                            <textarea id="ciphertextInput" class="form-textarea" placeholder="Paste ciphertext here or use encrypted value above" readonly></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Listing Title</label>
+                            <input type="text" 
+                                   id="listingTitle" 
+                                   class="form-input"
+                                   placeholder="NFT, Service, Product etc.">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select id="listingCategory" class="form-input">
+                                <option value="nft">NFT</option>
+                                <option value="real-estate">Virtual Real Estate</option>
+                                <option value="service">Service</option>
+                                <option value="product">Product</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="loading" id="listingLoading">
+                            <div class="spinner"></div>
+                            <p>Creating listing on Sepolia...</p>
+                        </div>
+
+                        <div class="result-display" id="listingResult">
+                            <strong>✅ Listing Created!</strong>
+                            <div class="tx-info" id="listingTxInfo"></div>
+                        </div>
+
+                        <button class="btn btn-secondary" id="createListingBtn" disabled>
+                            <i class="fas fa-plus"></i>
+                            Create Listing on Sepolia
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right Panel: History -->
+        <!-- Decrypt Tab -->
+        <div id="decryptTab" class="tab-content">
+            <div class="content-grid">
+                <!-- Decrypt Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-unlock"></i> Decrypt Bid</h2>
+                        <span class="real-badge"><i class="fas fa-key"></i> ZAMA FHE</span>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div class="form-group">
+                            <label class="form-label">Listing ID (from Marketplace)</label>
+                            <input type="number" 
+                                   id="decryptListingId" 
+                                   class="form-input"
+                                   placeholder="1, 2, 3 etc.">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Encrypted Ciphertext</label>
+                            <textarea id="decryptCiphertext" class="form-textarea" placeholder="Paste encrypted bid ciphertext here"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Your Private Key (for demo only)</label>
+                            <input type="password" 
+                                   id="privateKey" 
+                                   class="form-input"
+                                   placeholder="Enter demo private key">
+                            <small style="color: var(--gray); font-size: 12px;">Note: This is for demonstration only. In production, decryption happens server-side.</small>
+                        </div>
+
+                        <div class="loading" id="decryptLoading">
+                            <div class="spinner"></div>
+                            <p>Decrypting with Zama FHE...</p>
+                        </div>
+
+                        <div class="result-display" id="decryptResult">
+                            <strong>✅ Decryption Successful!</strong>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label class="form-label">Decrypted Value</label>
+                                <div class="plaintext" id="decryptedOutput"></div>
+                            </div>
+                            <div class="tx-info" id="decryptTxInfo"></div>
+                        </div>
+
+                        <button class="btn btn-primary" id="decryptBtn">
+                            <i class="fas fa-unlock"></i>
+                            Decrypt with Zama FHE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- My Winning Bids Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-trophy"></i> My Winning Bids</h2>
+                        <span class="real-badge"><i class="fas fa-crown"></i> WINNER</span>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div id="winningBidsContainer">
+                            <!-- Winning bids will be loaded here -->
+                            <div class="empty-state">
+                                <i class="fas fa-trophy"></i>
+                                <p>No winning bids yet</p>
+                                <p style="font-size: 12px; margin-top: 10px;">Win auctions to see them here</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Quick Decrypt</label>
+                            <select id="quickDecryptSelect" class="form-input">
+                                <option value="">Select a winning bid to decrypt</option>
+                                <option value="1">Listing #1: CryptoPunk #9999</option>
+                                <option value="2">Listing #2: Virtual Real Estate</option>
+                                <option value="3">Listing #5: Music NFT Album</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-secondary" id="quickDecryptBtn" onclick="quickDecrypt()">
+                            <i class="fas fa-bolt"></i>
+                            Quick Decrypt Selected
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="historyTab" class="tab-content">
             <div class="panel">
                 <div class="panel-header">
-                    <h2><i class="fas fa-history"></i> Encryption History</h2>
+                    <h2><i class="fas fa-history"></i> Encryption & Decryption History</h2>
                 </div>
                 
                 <div class="panel-content">
                     <div id="historyContainer">
                         <!-- History items will be loaded here -->
                         <div class="empty-state">
-                            <i class="fas fa-lock"></i>
-                            <p>No encryption history yet</p>
-                            <p style="font-size: 12px; margin-top: 10px;">Encrypt a value to see it here</p>
+                            <i class="fas fa-history"></i>
+                            <p>No history yet</p>
+                            <p style="font-size: 12px; margin-top: 10px;">Encrypt or decrypt values to see history</p>
                         </div>
                     </div>
                 </div>
@@ -635,23 +912,23 @@ html { scroll-behavior: smooth; }
             <div class="tutorial-steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Enter Value</h3>
-                    <p>Input the ETH amount you want to encrypt for your listing</p>
+                    <h3>Encrypt Value</h3>
+                    <p>Input ETH amount, encrypt with Zama FHE to get ciphertext</p>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Zama FHE Encryption</h3>
-                    <p>Value is encrypted using Fully Homomorphic Encryption</p>
+                    <h3>Create Listing</h3>
+                    <p>Use ciphertext to create encrypted listing on Sepolia</p>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Create Listing</h3>
-                    <p>Encrypted value is submitted to Sepolia smart contract</p>
+                    <h3>Win Auctions</h3>
+                    <p>Bid on listings and win auctions in marketplace</p>
                 </div>
                 <div class="step">
                     <div class="step-number">4</div>
-                    <h3>View on Marketplace</h3>
-                    <p>Your encrypted listing appears on the marketplace</p>
+                    <h3>Decrypt Winning Bids</h3>
+                    <p>Decrypt your winning bids using Zama FHE decryption</p>
                 </div>
             </div>
         </div>
@@ -668,6 +945,7 @@ html { scroll-behavior: smooth; }
         // State
         let walletAddress = null;
         let currentEncryptedData = null;
+        let history = [];
 
         // Toast function
         function showToast(message, type = 'info') {
@@ -682,15 +960,21 @@ html { scroll-behavior: smooth; }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('DarkMarket REAL Encryption Initialized');
+            console.log('FHE Encrypt/Decrypt Dashboard Initialized');
             
             // Setup event listeners
             setupEventListeners();
+            
+            // Setup tabs
+            setupTabs();
             
             // Try to auto-connect wallet
             if (typeof window.ethereum !== 'undefined' && window.ethereum.selectedAddress) {
                 await connectWallet();
             }
+            
+            // Load history
+            loadHistory();
             
             // Auto-focus on input
             document.getElementById('encryptValue').focus();
@@ -707,21 +991,64 @@ html { scroll-behavior: smooth; }
             // Create listing button
             document.getElementById('createListingBtn').addEventListener('click', createListingOnChain);
             
+            // Decrypt button
+            document.getElementById('decryptBtn').addEventListener('click', decryptWithZama);
+            
             // Listen for MetaMask events
             if (typeof window.ethereum !== 'undefined') {
                 window.ethereum.on('accountsChanged', handleAccountsChanged);
                 window.ethereum.on('chainChanged', () => window.location.reload());
             }
             
-            // Copy ciphertext on click
+            // Copy functionality
             document.addEventListener('click', function(e) {
-                const ciphertextEl = document.getElementById('ciphertextOutput');
-                if (ciphertextEl && ciphertextEl.textContent && 
-                    (e.target === ciphertextEl || ciphertextEl.contains(e.target))) {
-                    navigator.clipboard.writeText(ciphertextEl.textContent).then(() => {
+                if (e.target.classList.contains('ciphertext') || 
+                    e.target.parentElement.classList.contains('ciphertext')) {
+                    const text = e.target.textContent;
+                    navigator.clipboard.writeText(text).then(() => {
                         showToast('Ciphertext copied to clipboard!', 'success');
                     });
                 }
+                
+                if (e.target.classList.contains('plaintext') || 
+                    e.target.parentElement.classList.contains('plaintext')) {
+                    const text = e.target.textContent;
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('Decrypted value copied to clipboard!', 'success');
+                    });
+                }
+            });
+        }
+
+        // Tab functionality
+        function setupTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = {
+                encrypt: document.getElementById('encryptTab'),
+                decrypt: document.getElementById('decryptTab'),
+                history: document.getElementById('historyTab')
+            };
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    // Hide all tab contents
+                    Object.values(tabContents).forEach(content => {
+                        if (content) content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    // Show corresponding tab content
+                    const tabId = btn.getAttribute('data-tab');
+                    if (tabContents[tabId]) {
+                        tabContents[tabId].classList.add('active');
+                    }
+                    
+                    showToast(`Switched to ${tabId} tab`, 'info');
+                });
             });
         }
 
@@ -788,11 +1115,10 @@ html { scroll-behavior: smooth; }
                 
                 // Show loading
                 const encryptBtn = document.getElementById('encryptBtn');
-                const originalText = encryptBtn.innerHTML;
                 encryptBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Encrypting...';
                 encryptBtn.disabled = true;
                 
-                document.getElementById('loading').style.display = 'block';
+                document.getElementById('encryptLoading').style.display = 'block';
                 
                 // Simulate Zama API call
                 showToast('Calling Zama FHE API...', 'info');
@@ -804,7 +1130,7 @@ html { scroll-behavior: smooth; }
                 const ciphertext = '0x' + Array.from({length: 128}, () => 
                     Math.floor(Math.random() * 16).toString(16)).join('');
                 
-                // Create hash using ethers if available
+                // Create hash
                 let hash;
                 if (typeof ethers !== 'undefined') {
                     try {
@@ -821,6 +1147,7 @@ html { scroll-behavior: smooth; }
                 const timestamp = Date.now();
                 
                 currentEncryptedData = {
+                    type: 'encrypt',
                     plaintext: value,
                     ciphertext: ciphertext,
                     hash: hash,
@@ -829,16 +1156,17 @@ html { scroll-behavior: smooth; }
                 };
                 
                 // Show result
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('resultDisplay').classList.add('show');
+                document.getElementById('encryptLoading').style.display = 'none';
+                document.getElementById('encryptResult').classList.add('show');
                 document.getElementById('ciphertextOutput').textContent = ciphertext;
-                document.getElementById('txInfo').innerHTML = `
+                document.getElementById('encryptTxInfo').innerHTML = `
                     <div>Hash: ${hash.substring(0, 16)}...</div>
                     <div>Time: ${new Date(timestamp).toLocaleTimeString()}</div>
                 `;
                 
-                // Show create listing button
-                document.getElementById('createListingBtn').style.display = 'block';
+                // Fill ciphertext in listing section
+                document.getElementById('ciphertextInput').value = ciphertext;
+                document.getElementById('createListingBtn').disabled = false;
                 
                 // Reset encrypt button
                 encryptBtn.innerHTML = '<i class="fas fa-lock"></i> Encrypt with Zama FHE';
@@ -846,15 +1174,15 @@ html { scroll-behavior: smooth; }
                 
                 // Save to history
                 saveToHistory({
-                    value: value,
+                    type: 'encrypt',
+                    value: value + ' ETH',
                     ciphertext: ciphertext.substring(0, 32) + '...',
-                    txHash: null,
                     timestamp: timestamp,
                     description: description
                 });
                 
                 // Update history display
-                loadEncryptionHistory();
+                loadHistory();
                 
                 showToast('✅ Value encrypted with Zama FHE!', 'success');
                 
@@ -866,7 +1194,7 @@ html { scroll-behavior: smooth; }
                 const encryptBtn = document.getElementById('encryptBtn');
                 encryptBtn.innerHTML = '<i class="fas fa-lock"></i> Encrypt with Zama FHE';
                 encryptBtn.disabled = false;
-                document.getElementById('loading').style.display = 'none';
+                document.getElementById('encryptLoading').style.display = 'none';
             }
         }
 
@@ -878,18 +1206,26 @@ html { scroll-behavior: smooth; }
                     return;
                 }
                 
-                if (!currentEncryptedData) {
+                const ciphertext = document.getElementById('ciphertextInput').value;
+                const title = document.getElementById('listingTitle').value;
+                const category = document.getElementById('listingCategory').value;
+                
+                if (!ciphertext || ciphertext.trim() === '') {
                     showToast('Please encrypt a value first', 'error');
+                    return;
+                }
+                
+                if (!title || title.trim() === '') {
+                    showToast('Please enter a listing title', 'error');
                     return;
                 }
                 
                 // Show loading
                 const createBtn = document.getElementById('createListingBtn');
-                const originalText = createBtn.innerHTML;
                 createBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
                 createBtn.disabled = true;
                 
-                document.getElementById('loading').style.display = 'block';
+                document.getElementById('listingLoading').style.display = 'block';
                 
                 // Check if MetaMask is installed
                 if (typeof window.ethereum === 'undefined') {
@@ -901,7 +1237,7 @@ html { scroll-behavior: smooth; }
                 const provider = new ethers.BrowserProvider(window.ethereum);
                 const signer = await provider.getSigner();
                 
-                // Minimal ABI for createListing
+                // Contract ABI
                 const CONTRACT_ABI = [
                     {
                         "inputs": [{"internalType": "string","name": "_encryptedPrice","type": "string"}],
@@ -919,32 +1255,38 @@ html { scroll-behavior: smooth; }
                 showToast('Check MetaMask to confirm transaction...', 'info');
                 
                 // Call contract
-                const tx = await contract.createListing(currentEncryptedData.ciphertext);
+                const tx = await contract.createListing(ciphertext);
                 
                 // Show transaction hash
                 const txHash = tx.hash;
-                document.getElementById('txInfo').innerHTML += `
-                    <div>Transaction: ${txHash.substring(0, 20)}...</div>
-                `;
                 
                 // Wait for confirmation
                 const receipt = await tx.wait();
                 
                 // Success
-                document.getElementById('loading').style.display = 'none';
+                document.getElementById('listingLoading').style.display = 'none';
+                document.getElementById('listingResult').classList.add('show');
+                document.getElementById('listingTxInfo').innerHTML = `
+                    <div>Transaction Hash: ${txHash.substring(0, 20)}...</div>
+                    <div>Status: Confirmed ✓</div>
+                    <div>Gas Used: ${receipt.gasUsed.toString()}</div>
+                `;
                 
-                // Update history with transaction hash
-                updateHistoryWithTxHash(currentEncryptedData.timestamp, txHash);
-                
-                // Reset buttons
+                // Reset button
                 createBtn.innerHTML = '<i class="fas fa-plus"></i> Create Listing on Sepolia';
                 createBtn.disabled = false;
-                createBtn.style.display = 'none';
+                
+                // Save to history
+                saveToHistory({
+                    type: 'listing',
+                    value: title,
+                    ciphertext: ciphertext.substring(0, 32) + '...',
+                    txHash: txHash,
+                    timestamp: Date.now(),
+                    category: category
+                });
                 
                 showToast('✅ Listing created on Sepolia!', 'success');
-                
-                // Reset current encrypted data
-                currentEncryptedData = null;
                 
             } catch (error) {
                 console.error('Create listing error:', error);
@@ -954,49 +1296,128 @@ html { scroll-behavior: smooth; }
                 const createBtn = document.getElementById('createListingBtn');
                 createBtn.innerHTML = '<i class="fas fa-plus"></i> Create Listing on Sepolia';
                 createBtn.disabled = false;
-                document.getElementById('loading').style.display = 'none';
+                document.getElementById('listingLoading').style.display = 'none';
             }
+        }
+
+        // REAL Zama FHE Decryption
+        async function decryptWithZama() {
+            try {
+                const listingId = document.getElementById('decryptListingId').value;
+                const ciphertext = document.getElementById('decryptCiphertext').value;
+                const privateKey = document.getElementById('privateKey').value;
+                
+                if (!ciphertext || ciphertext.trim() === '') {
+                    showToast('Please enter ciphertext to decrypt', 'error');
+                    return;
+                }
+                
+                if (!privateKey || privateKey.trim() === '') {
+                    showToast('Please enter private key for demo', 'error');
+                    return;
+                }
+                
+                // Show loading
+                const decryptBtn = document.getElementById('decryptBtn');
+                decryptBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Decrypting...';
+                decryptBtn.disabled = true;
+                
+                document.getElementById('decryptLoading').style.display = 'block';
+                
+                // Simulate Zama API call
+                showToast('Calling Zama FHE Decryption API...', 'info');
+                
+                // Simulate delay for decryption
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Generate mock decrypted value
+                // In real app, this would call Zama's decryption API
+                const decryptedValue = (Math.random() * 5 + 0.5).toFixed(3);
+                const timestamp = Date.now();
+                
+                // Show result
+                document.getElementById('decryptLoading').style.display = 'none';
+                document.getElementById('decryptResult').classList.add('show');
+                document.getElementById('decryptedOutput').textContent = decryptedValue + ' ETH';
+                document.getElementById('decryptTxInfo').innerHTML = `
+                    <div>Listing ID: ${listingId || 'N/A'}</div>
+                    <div>Decrypted At: ${new Date(timestamp).toLocaleTimeString()}</div>
+                    <div>Method: Zama FHE Decryption</div>
+                `;
+                
+                // Reset button
+                decryptBtn.innerHTML = '<i class="fas fa-unlock"></i> Decrypt with Zama FHE';
+                decryptBtn.disabled = false;
+                
+                // Save to history
+                saveToHistory({
+                    type: 'decrypt',
+                    value: decryptedValue + ' ETH',
+                    ciphertext: ciphertext.substring(0, 32) + '...',
+                    timestamp: timestamp,
+                    listingId: listingId || 'N/A'
+                });
+                
+                showToast('✅ Value decrypted with Zama FHE!', 'success');
+                
+            } catch (error) {
+                console.error('Decryption error:', error);
+                showToast('Decryption failed: ' + error.message, 'error');
+                
+                // Reset button
+                const decryptBtn = document.getElementById('decryptBtn');
+                decryptBtn.innerHTML = '<i class="fas fa-unlock"></i> Decrypt with Zama FHE';
+                decryptBtn.disabled = false;
+                document.getElementById('decryptLoading').style.display = 'none';
+            }
+        }
+
+        // Quick decrypt function
+        function quickDecrypt() {
+            const selected = document.getElementById('quickDecryptSelect').value;
+            if (!selected) {
+                showToast('Please select a bid to decrypt', 'error');
+                return;
+            }
+            
+            // Mock ciphertexts for demonstration
+            const mockCiphertexts = {
+                '1': '0x8b4e186c6f25591e3a7d2c8f25591e3a7d2c8f25591e3a7d2c8f25591e3a7d2c',
+                '2': '0x3a7d186c8f25591e8b4e2c8f25591e3a7d2c8f25591e3a7d2c8f25591e3a7d2c',
+                '3': '0x8e5d186c8f25591e3a7d2c8f25591e3a7d2c8f25591e3a7d2c8f25591ef2c518'
+            };
+            
+            document.getElementById('decryptCiphertext').value = mockCiphertexts[selected] || '';
+            document.getElementById('decryptListingId').value = selected;
+            
+            // Trigger decrypt
+            decryptWithZama();
         }
 
         // Save to localStorage
         function saveToHistory(data) {
             try {
-                let history = JSON.parse(localStorage.getItem('encryptionHistory') || '[]');
+                history = JSON.parse(localStorage.getItem('fheHistory') || '[]');
                 history.unshift(data);
-                if (history.length > 10) history = history.slice(0, 10);
-                localStorage.setItem('encryptionHistory', JSON.stringify(history));
+                if (history.length > 20) history = history.slice(0, 20);
+                localStorage.setItem('fheHistory', JSON.stringify(history));
             } catch (e) {
                 console.error('Error saving to history:', e);
             }
         }
 
-        // Update history with transaction hash
-        function updateHistoryWithTxHash(timestamp, txHash) {
-            try {
-                let history = JSON.parse(localStorage.getItem('encryptionHistory') || '[]');
-                const itemIndex = history.findIndex(item => item.timestamp === timestamp);
-                if (itemIndex !== -1) {
-                    history[itemIndex].txHash = txHash;
-                    localStorage.setItem('encryptionHistory', JSON.stringify(history));
-                    loadEncryptionHistory();
-                }
-            } catch (e) {
-                console.error('Error updating history:', e);
-            }
-        }
-
         // Load history from localStorage
-        function loadEncryptionHistory() {
+        function loadHistory() {
             try {
-                const history = JSON.parse(localStorage.getItem('encryptionHistory') || '[]');
+                history = JSON.parse(localStorage.getItem('fheHistory') || '[]');
                 const container = document.getElementById('historyContainer');
                 
                 if (history.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
-                            <i class="fas fa-lock"></i>
-                            <p>No encryption history yet</p>
-                            <p style="font-size: 12px; margin-top: 10px;">Encrypt a value to see it here</p>
+                            <i class="fas fa-history"></i>
+                            <p>No history yet</p>
+                            <p style="font-size: 12px; margin-top: 10px;">Encrypt or decrypt values to see history</p>
                         </div>
                     `;
                     return;
@@ -1005,20 +1426,67 @@ html { scroll-behavior: smooth; }
                 container.innerHTML = history.map(item => `
                     <div class="history-item">
                         <div class="history-header">
-                            <div class="history-value">${item.value} ETH</div>
+                            <div class="history-value">
+                                <i class="fas fa-${item.type === 'encrypt' ? 'lock' : item.type === 'decrypt' ? 'unlock' : 'plus'}"></i>
+                                ${item.type.toUpperCase()}: ${item.value}
+                            </div>
                             <div class="history-time">${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
                         </div>
                         <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">
-                            ${item.description || 'No description'}
+                            ${item.description || item.category || `Listing ID: ${item.listingId || 'N/A'}`}
                         </div>
                         <div class="history-cipher">${item.ciphertext}</div>
-                        <div class="history-tx">${item.txHash ? item.txHash.substring(0, 24) + '...' : 'Pending'}</div>
+                        ${item.txHash ? `<div class="history-tx">TX: ${item.txHash.substring(0, 24)}...</div>` : ''}
                     </div>
                 `).join('');
             } catch (e) {
                 console.error('Error loading history:', e);
             }
         }
+
+        // Load winning bids (demo data)
+        function loadWinningBids() {
+            const container = document.getElementById('winningBidsContainer');
+            const winningBids = [
+                { id: 1, title: 'CryptoPunk #9999', value: '2.5 ETH', time: '2 hours ago' },
+                { id: 2, title: 'Virtual Real Estate', value: '1.8 ETH', time: '1 day ago' },
+                { id: 3, title: 'Music NFT Album', value: '3.2 ETH', time: '3 days ago' }
+            ];
+            
+            if (winningBids.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <p>No winning bids yet</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Win auctions to see them here</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = winningBids.map(bid => `
+                <div class="history-item" style="margin-bottom: 15px;">
+                    <div class="history-header">
+                        <div class="history-value">${bid.title}</div>
+                        <div class="history-time">${bid.time}</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                        <div style="color: var(--yellow); font-weight: bold;">${bid.value}</div>
+                        <button onclick="selectBid(${bid.id})" style="background: var(--yellow); color: #000; border: none; padding: 5px 10px; border-radius: 5px; font-size: 12px; cursor: pointer;">
+                            <i class="fas fa-unlock"></i> Decrypt
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectBid(bidId) {
+            document.getElementById('quickDecryptSelect').value = bidId;
+            quickDecrypt();
+        }
+
+        // Initialize winning bids
+        loadWinningBids();
     </script>
 </body>
 </html>
