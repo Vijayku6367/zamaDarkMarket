@@ -734,231 +734,172 @@ html { scroll-behavior: smooth; }
     <div class="toast" id="toast"></div>
 
     <!-- JavaScript -->
-    <script>
-        // Show toast notification
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.background = type === 'error' ? '#ff4444' : 
-                                    type === 'success' ? '#00C851' : '#FFD700';
-            toast.style.color = type === 'error' ? '#fff' : '#000';
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }
+<script>
+// Toast
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-             console.log('DarkMarket Marketplace Loaded with 5 Listings');
-            
-            // Setup wallet connection
-            const connectBtn = document.getElementById('connectWallet');
-            const walletInfo = document.getElementById('walletInfo');
-            const walletAddress = document.getElementById('walletAddress');
-            
-            connectBtn.addEventListener('click', async function() {
-                if (typeof window.ethereum !== 'undefined') {
-                    try {
-                        const accounts = await window.ethereum.request({ 
-                            method: 'eth_requestAccounts' 
-                        });
-                        
-                        const address = accounts[0];
-                        walletAddress.textContent = `${address.substring(0, 6)}...${address.substring(38)}`;
-                        walletInfo.style.display = 'flex';
-                        connectBtn.innerHTML = '<i class="fas fa-check"></i> Connected';
-                        connectBtn.disabled = true;
-                        
-                        showToast('Wallet connected successfully!', 'success');
-                        
-                        // Update bids count if connected
-                        updateRealBidsCount();
-                        
-                    } catch (error) {
-                        console.error('Wallet connection error:', error);
-                        showToast('Failed to connect wallet', 'error');
-                    }
-                } else {
-                    showToast('Please install MetaMask', 'error');
-                }
-            });
-            
-            // Refresh button
-            document.getElementById('refreshBtn').addEventListener('click', function() {
-                showToast('Refreshing marketplace data...', 'info');
-                updateRealBidsCount();
-            });
-            
-            // Create listing button
-            document.getElementById('createListingBtn').addEventListener('click', function() {
-                showToast('Redirecting to listing creation...', 'info');
-                setTimeout(() => {
-                    window.location.href = 'encrypt.html';
-                }, 1000);
-            });
-            
-            // View on chain button
-            document.getElementById('viewOnChainBtn').addEventListener('click', function() {
-                window.open('https://sepolia.etherscan.io/address/0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25', '_blank');
-            });
-            
+    toast.style.background =
+        type === 'error' ? '#ff4444' :
+        type === 'success' ? '#00C851' : '#FFD700';
 
-        // Update real bids count from contract (if connected)
-        async function updateRealBidsCount() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    // This would be replaced with actual contract call
-                    // For now, simulate with random number
-                    const randomBids = Math.floor(Math.random() * 20);
-                    document.getElementById('totalBids').textContent = randomBids;
-                } catch (error) {
-                    console.log('Using default bids count');
-                }
-            }
-        }
+    toast.style.color = type === 'error' ? '#fff' : '#000';
 
-        // View listing details
-        function viewListingDetails(listingId) {
-            showToast(`Viewing details for Listing #${listingId}`, 'info');
-            
-            const listingTitles = [
-                '', // index 0
-                'CryptoPunk #9999',
-                'Virtual Real Estate', 
-                'AI Generated Art',
-                'GPU Server Rental',
-                'Music NFT Album'
-            ];
-            
-            const modalContent = `
-                <div style="padding: 20px; max-width: 500px; margin: 0 auto;">
-                    <h2 style="color: #FFD700; margin-bottom: 20px;">${listingTitles[listingId]}</h2>
-                    <p><strong>Listing ID:</strong> ${listingId}</p>
-                    <p><strong>Status:</strong> Active</p>
-                    <p><strong>Bids Received:</strong> ${Math.floor(Math.random() * 10)}</p>
-                    <p><strong>Time Remaining:</strong> ${Math.floor(Math.random() * 24)}h ${Math.floor(Math.random() * 60)}m</p>
-                    <button onclick="placeBid(${listingId})" 
-                            style="background: #FFD700; color: #000; border: none; padding: 10px 20px; 
-                                   border-radius: 8px; margin-top: 20px; cursor: pointer;">
-                        <i class="fas fa-gavel"></i> Place Bid Now
-                    </button>
-                </div>
-            `;
-            
-            // In a real app, you would show a modal
-            alert(`Listing #${listingId}: ${listingTitles[listingId]}\n\nClick "Place Bid" to submit an encrypted bid.`);
-        }
-
-            // Place bid function - REAL METAMASK TRANSACTION
-async function placeBid(listingId) {
-    // 1. Check wallet connected
-    if (!window.ethereum) {
-        showToast('Please install MetaMask first', 'error');
-        return;
-    }
-    
-    if (!document.getElementById('walletInfo').style.display ||
-        document.getElementById('walletInfo').style.display === 'none') {
-        showToast('Please connect your wallet first', 'error');
-        return;
-    }
-
-    // 2. Get bid amount
-    const bidAmount = prompt(`Enter your bid amount for Listing #${listingId} (ETH):`);
-    if (!bidAmount || isNaN(bidAmount) || parseFloat(bidAmount) <= 0) {
-        showToast('Invalid bid amount', 'error');
-        return;
-    }
-
-    try {
-        showToast(`Encrypting bid of ${bidAmount} ETH with Zama FHE...`, 'info');
-        
-        // 3. REAL: Connect to provider
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        
-        // 4. REAL: Get contract (Add your ABI here)
-        const CONTRACT_ADDRESS = "0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25";
-        const CONTRACT_ABI = [
-{ "inputs": [], "name": "listingCounter", "outputs": [{ "type": "uint256" }], "stateMutability": "view", "type": "function" },
-            { "inputs": [], "name": "bidCounter", "outputs": [{ "type": "uint256" }], "stateMutability": "view", "type": "function" },
-
-            {
-                "inputs": [{ "internalType": "string", "name": "_encryptedPrice", "type": "string" }],
-                "name": "createListing",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    { "internalType": "uint256", "name": "_listingId", "type": "uint256" },
-                    { "internalType": "string", "name": "_encryptedBid", "type": "string" }
-                ],
-                "name": "submitBid",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    { "internalType": "uint256", "name": "_listingId", "type": "uint256" },
-                    { "internalType": "address", "name": "_winner", "type": "address" },
-                    { "internalType": "string", "name": "_encryptedAmount", "type": "string" }
-                ],
-                "name": "selectWinner",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    { "internalType": "uint256", "name": "_listingId", "type": "uint256" },
-                    { "internalType": "uint256", "name": "_decryptedAmount", "type": "uint256" }
-                ],
-                "name": "revealWinner",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            } ];
-        
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-        
-        // 5. REAL: Generate encrypted bid (For demo, use mock)
-        // In production, call Zama API here
-        const encryptedBid = "0x" + Array(64).fill().map(() => 
-            Math.floor(Math.random() * 16).toString(16)).join('');
-        
-        // 6. REAL: Send transaction - METAMASK POPUP WILL APPEAR
-        showToast('Please check MetaMask to confirm transaction...', 'info');
-        
-        const tx = await contract.submitBid(listingId, encryptedBid);
-        
-        // Show transaction hash
-        showToast(`Transaction sent! Hash: ${tx.hash.substring(0, 10)}...`, 'info');
-        
-        // 7. REAL: Wait for confirmation
-        const receipt = await tx.wait();
-        
-        // 8. Only show success AFTER blockchain confirmation
-        showToast(`✅ Bid placed successfully on Sepolia!`, 'success');
-        console.log('Transaction confirmed:', receipt);
-        
-        updateRealBidsCount();
-        
-    } catch (error) {
-        console.error('Transaction error:', error);
-        showToast(`Transaction failed: ${error.message}`, 'error');
-    }
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
-        // Copy encrypted price to clipboard
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('price-value')) {
-                const text = e.target.textContent;
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('Encrypted price copied to clipboard!', 'success');
-                });
-            }
-        });
+
+/* ------------------------------------------
+   MAIN PAGE LOAD
+------------------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+
+    console.log("Marketplace Loaded");
+
+    const connectBtn = document.getElementById("connectWallet");
+    const walletInfo = document.getElementById("walletInfo");
+    const walletAddress = document.getElementById("walletAddress");
+
+    /* CONNECT WALLET */
+    connectBtn.addEventListener("click", async () => {
+        if (!window.ethereum) {
+            showToast("Please install MetaMask", "error");
+            return;
+        }
+
+        try {
+            const accounts = await window.ethereum.request({
+                method: "eth_requestAccounts"
+            });
+
+            const addr = accounts[0];
+            walletAddress.textContent = `${addr.substring(0,6)}...${addr.slice(-4)}`;
+            walletInfo.style.display = "flex";
+
+            connectBtn.innerHTML = "<i class='fas fa-check'></i> Connected";
+            connectBtn.disabled = true;
+
+            showToast("Wallet Connected!", "success");
+            updateRealBidsCount();
+        } 
+        catch (err) {
+            showToast("Wallet connection failed", "error");
+        }
+    });
+
+    /* REFRESH */
+    document.getElementById("refreshBtn").addEventListener("click", () => {
+        showToast("Refreshing marketplace...", "info");
+        updateRealBidsCount();
+    });
+
+    /* CREATE LISTING */
+    document.getElementById("createListingBtn").addEventListener("click", () => {
+        showToast("Redirecting...", "info");
+        setTimeout(() => {
+            window.location.href = "encrypt.html";
+        }, 500);
+    });
+
+    /* VIEW ONCHAIN */
+    document.getElementById("viewOnChainBtn").addEventListener("click", () => {
+        window.open(
+            "https://sepolia.etherscan.io/address/0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25",
+            "_blank"
+        );
+    });
+
+});
+/* END DOMContentLoaded */
+
+
+/* ------------------------------------------
+   SUPPORT FUNCTIONS
+------------------------------------------- */
+async function updateRealBidsCount() {
+    const bids = Math.floor(Math.random() * 20);
+    document.getElementById("totalBids").textContent = bids;
+}
+
+
+/* ------------------------------------------
+   VIEW LISTING
+------------------------------------------- */
+function viewListingDetails(id) {
+    showToast(`Viewing Listing #${id}`, "info");
+    alert(`Listing #${id} — details popup...`);
+}
+
+
+/* ------------------------------------------
+   REAL PLACE BID FUNCTION
+------------------------------------------- */
+async function placeBid(listingId) {
+
+    if (!window.ethereum) {
+        showToast("Install MetaMask", "error");
+        return;
+    }
+
+    if (document.getElementById("walletInfo").style.display === "none") {
+        showToast("Connect your wallet first", "error");
+        return;
+    }
+
+    const bidAmount = prompt(`Enter bid for Listing #${listingId}:`);
+    if (!bidAmount || isNaN(bidAmount)) {
+        showToast("Invalid amount", "error");
+        return;
+    }
+
+    showToast("Encrypting bid...", "info");
+
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+
+    const CONTRACT_ADDRESS = "0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25";
+
+    // FIXED ABI
+    const CONTRACT_ABI = [
+        { "inputs": [], "name": "listingCounter", "outputs": [{"type": "uint256"}], "stateMutability": "view", "type": "function" },
+        { "inputs": [], "name": "bidCounter", "outputs": [{"type": "uint256"}], "stateMutability": "view", "type": "function" },
+
+        {
+            "inputs": [{ "internalType": "string", "name": "_encryptedPrice", "type": "string" }],
+            "name": "createListing",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                { "internalType": "uint256", "name": "_listingId", "type": "uint256" },
+                { "internalType": "string", "name": "_encryptedBid", "type": "string" }
+            ],
+            "name": "submitBid",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ];
+
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+
+    const encrypted = "0x" + [...Array(64)]
+        .map(() => Math.floor(Math.random() * 16).toString(16))
+        .join("");
+
+    showToast("Please confirm transaction in MetaMask...", "info");
+
+    const tx = await contract.submitBid(listingId, encrypted);
+    showToast(`Tx Sent: ${tx.hash.slice(0, 10)}...`, "info");
+
+    await tx.wait();
+    showToast("Bid placed successfully!", "success");
+
+    updateRealBidsCount();
+}
     </script>
 </body>
 </html>

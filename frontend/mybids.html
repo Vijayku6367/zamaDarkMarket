@@ -915,28 +915,24 @@ html { scroll-behavior: smooth; }
             expired: document.getElementById('expiredTab')
         };
 
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active class from all buttons
-                tabBtns.forEach(b => b.classList.remove('active'));
-                // Hide all tab contents
-                Object.values(tabContents).forEach(content => {
-                    if (content) content.style.display = 'none';
-                });
-                
-                // Add active class to clicked button
-                btn.classList.add('active');
-                
-                // Show corresponding tab content
-                const tabId = btn.getAttribute('data-tab');
-                if (tabContents[tabId]) {
-                    tabContents[tabId].style.display = 'block';
-                }
-                
-                showToast(`Showing ${tabId} bids`, 'info');
-            });
+    tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+
+        Object.values(tabContents).forEach(content => {
+            if (content) content.style.display = 'none';
         });
 
+        btn.classList.add('active');
+
+        const tabId = btn.getAttribute('data-tab');
+        if (tabContents[tabId]) {
+            tabContents[tabId].style.display = 'block';
+        }
+
+        showToast(`Showing ${tabId} bids`, 'info');
+    });
+});
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('My Bids Dashboard Loaded');
@@ -969,6 +965,7 @@ html { scroll-behavior: smooth; }
                     showToast('Please install MetaMask', 'error');
                 }
             });
+         });
          
 
         // Bid action functions
