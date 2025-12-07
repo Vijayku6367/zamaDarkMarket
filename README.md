@@ -163,36 +163,6 @@ Open `frontend/index.html` and click through
 4. **Collaboration** - Git friendly
 
 ---
-
-## 📞 TROUBLESHOOTING (Mobile)
-
-### **Termux Issues:**
-```bash
-# If node not found:
-pkg install nodejs -y
-
-# If permission denied:
-termux-setup-storage
-
-# If git clone fails:
-pkg install git -y
-```
-
-### **Browser Issues:**
-1. Enable JavaScript
-2. Install MetaMask mobile app
-3. Connect to Sepolia testnet
-
-### **Contract Issues:**
-```bash
-# Reset everything:
-rm -rf node_modules
-npm cache clean --force
-npm install
-```
-
----
-
 ## 🎥 PRESENTATION TIPS
 
 ### **30-Second Pitch:**
@@ -214,35 +184,6 @@ npm install
 ---
 
 ## 🤝 CONTRIBUTING
-
-### **Team Workflow:**
-```bash
-# 1. Clone repo
-git clone https://github.com/yourusername/darkmarket-fhe
-
-# 2. Create branch
-git checkout -b feature/animation
-
-# 3. Make changes in Acode
-
-# 4. Test
-node scripts/demo-flow.js
-
-# 5. Commit
-git add .
-git commit -m "Added card flip animation"
-
-# 6. Push
-git push origin feature/animation
-```
-
-### **File Naming:**
-- HTML: `page-name.html`
-- CSS: Use BEM naming
-- JS: CamelCase functions
-- Contracts: PascalCase
-
----
 
 ## 📚 RESOURCES
 
@@ -266,13 +207,6 @@ git push origin feature/animation
 
 ## 🏁 GETTING STARTED RIGHT NOW
 
-**Open Termux and paste:**
-```bash
-pkg install git -y && git clone https://github.com/yourusername/darkmarket-fhe && cd darkmarket-fhe && echo "✅ Project ready! Run: npm install"
-```
-
----
-
 <div align="center">
 
 ## ⚡ **NEXT STEPS**
@@ -289,138 +223,16 @@ pkg install git -y && git clone https://github.com/yourusername/darkmarket-fhe &
 
 ---
 
-## 📞 NEED HELP?
-
-### **Common Issues & Solutions:**
-
-| Issue | Solution |
-|-------|----------|
-| Node.js not found | `pkg install nodejs -y` |
-| Git clone fails | `pkg install git -y` |
-| Contract deploy fails | Check Sepolia RPC URL |
-| Animations not working | Enable JavaScript |
-| Wallet not connecting | Install MetaMask mobile |
-
-### **Quick Commands Reference:**
-```bash
-# See all available commands
-npm run help
-
-# Reset project
-npm run reset
-
-# Check system
-npm run check
-
-# Deploy everything
-npm run deploy:all
-```
-
----
+## 📞 NEED HELP? 
 
 ## 🎉 YOU'RE READY!
 
-**Project Status:** ✅ Phone-Optimized ✅ Animation-Ready ✅ Hackathon-Ready
-
-**Team Action Items:**
-1. Clone repo to each phone
-2. Run `npm install`
-3. Test `demo-flow.js`
-4. Customize animations
-5. Practice presentation
-
-**Remember:** Entire project runs on a single phone. No laptops needed!
-
----
-
-<div align="center">
-
-## 🚀 **START BUILDING NOW**
-
-```bash
-git clone https://github.com/yourusername/darkmarket-fhe
-cd darkmarket-fhe
-npm install
-npm start
-```
 
 **Built with ❤️ for Hackathons • Optimized for Mobile • Powered by FHE**
 
-</div>
-```
 
----
-
-## 📦 Complete Package.json for Mobile
-
-```json
-{
-  "name": "darkmarket-fhe",
-  "version": "1.0.0",
-  "description": "Fully Homomorphic Encrypted Marketplace - Phone Optimized",
-  "main": "index.js",
-  "scripts": {
-    "start": "node scripts/demo-flow.js",
-    "deploy": "npx hardhat run scripts/deploy.js --network sepolia",
-    "test": "npx hardhat test",
-    "frontend": "python3 -m http.server 8080",
-    "encrypt": "node scripts/encrypt.js",
-    "decrypt": "node scripts/decrypt.js",
-    "demo": "node scripts/demo-flow.js --interactive",
-    "quick": "node scripts/demo-flow.js --quick",
-    "reset": "rm -rf node_modules && npm cache clean --force",
-    "check": "node --version && npm --version && echo '✅ System ready'",
-    "help": "echo 'Available commands: npm run [start|deploy|test|frontend|encrypt|decrypt|demo|quick|reset|check]'"
-  },
-  "keywords": ["fhe", "zama", "encryption", "marketplace", "mobile"],
-  "author": "Your Team Name",
-  "license": "MIT",
-  "dependencies": {
-    "@zama/fhevm": "^0.1.0",
-    "ethers": "^6.0.0",
-    "hardhat": "^2.0.0"
-  },
-  "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "chai": "^4.0.0",
-    "mocha": "^10.0.0"
-  }
-}
-```
-
----
-
-## 🎯 Team Notice Ke Liye Cheat Sheet
-
-### **Ek Page Me Sab Kuch:**
-1. **Install**: `pkg install nodejs git -y`
-2. **Clone**: `git clone https://github.com/yourusername/darkmarket-fhe`
-3. **Setup**: `cd darkmarket-fhe && npm install`
-4. **Run**: `npm start`
-
-### **Demo Sequence:**
-```
-1. Open Termux
-2. Run: npm start
-3. Open browser: localhost:8080/frontend
-4. Show wallet connect
-5. Show encryption
-6. Show bidding
-7. Show winner selection
-8. Show decryption
-```
-
-### **Animation Customization:**
-- Edit `frontend/style.css` - Look for `/* ANIMATION */` comments
-- All animations are CSS-based (no extra libraries)
-- Mobile-optimized (60fps on phone)
-
-### **Judges Ke Liye Points:**
+### **Judges Points:**
 1. **Privacy**: FHE keeps everything encrypted
 2. **Mobile**: Entire project on phone
 3. **UI**: Professional animations
 4. **Working**: Live demo possible
-
-**Project Status:** ✅ READY FOR HACKATHON ✅
-
-Ye README file copy karke apne repo me `README.md` ke naam se save karo. Har team member easily samajh payega aur phone se kaam kar payega!
