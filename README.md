@@ -1,48 +1,5 @@
 # 🚀 DarkMarket FHE - Encrypted Marketplace Project
 
-## 📱 Phone-Optimized Complete Project Structure
-
-```bash
-darkmarket-fhe/
-│
-├── contracts/              # FHE Smart Contracts
-│   ├── DarkMarket.sol     # Main Marketplace Contract
-│   └── EncryptedMath.sol  # FHE Helper Functions
-│
-├── scripts/               # Mobile-Optimized Scripts
-│   ├── deploy.js         # Contract Deployment
-│   ├── encrypt.js        # Zama FHE Encryption
-│   ├── decrypt.js        # Zama FHE Decryption
-│   └── demo-flow.js      # Complete Demo Flow
-│
-├── tests/                # Lightweight Tests
-│   ├── darkmarket.test.js
-│   └── encryption.test.js
-│
-├── frontend/             # Figma-Level Animated UI
-│   ├── index.html       # Homepage with Animations
-│   ├── marketplace.html # Main Marketplace UI
-│   ├── encrypt.html     # Encrypt Page
-│   ├── mybids.html      # My Bids Page
-│   ├── style.css        # Advanced Animations
-│   └── app.js           # Main JavaScript
-│
-├── assets/              # Images/Icons
-│   ├── icons/
-│   └── logos/
-│
-├── docs/                # Documentation
-│   ├── README.md
-│   ├── ARCHITECTURE.md
-│   └── FLOW_DIAGRAM.md
-│
-├── hardhat.config.js    # Hardhat Configuration
-├── package.json         # Dependencies
-└── .gitignore          # Git Ignore
-```
-
----
-
 ## 📄 README.md - Team Notice Ke Liye
 
 ```markdown
