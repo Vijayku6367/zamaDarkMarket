@@ -461,6 +461,35 @@ button, .btn {
 }
 html { scroll-behavior: smooth; }
 * { -webkit-tap-highlight-color: transparent; }
+.wallet-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+/* Address style */
+.wallet-info {
+    display: none; /* JS se flex ho jayega */
+}
+
+.wallet-address {
+    border: 1px solid #f5c400;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #f5c400;
+}
+
+/* Connected button style */
+.wallet-btn.connected,
+.wallet-btn:disabled {
+    background: #f5c400;
+    color: black;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
@@ -490,15 +519,16 @@ html { scroll-behavior: smooth; }
             My Bids
         </a>
     </div>
-    
-    <div class="wallet-info" id="walletInfo">
+<div class="wallet-container">
+    <div class="wallet-info" id="walletInfo" style="display: none;">
         <div class="wallet-address" id="walletAddress"></div>
     </div>
-    
+
     <button class="wallet-btn" id="connectWallet">
         <i class="fas fa-wallet"></i>
         Connect Wallet
     </button>
+</div>    
 </nav>
     <!-- Main Container -->
     <div class="container">

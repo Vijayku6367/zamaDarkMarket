@@ -483,8 +483,8 @@ body {
 
 /* Features Section */
 .features-section {
-    padding: 100px 20px;
-    position: relative;
+    padding: 80px 50px;
+    position: center;
 }
 
 .section-header {
@@ -1380,3 +1380,61 @@ a:hover {
     }
 }
 @media (max-width: 768px) { .nav { padding: 15px; flex-direction: column; } .listings-grid { grid-template-columns: 1fr; } .stats { grid-template-columns: repeat(2, 1fr); } .actions, .listing-actions { flex-direction: column; } .header h1 { font-size: 32px; } } @media (min-width: 769px) and (max-width: 1024px) { .listings-grid { grid-template-columns: repeat(2, 1fr); } } @media (min-width: 1025px) { .listings-grid { grid-template-columns: repeat(3, 1fr); } }
+/* Button Section Layout */
+.network-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 90%;
+    max-width: 500px;
+    margin: 40px auto;
+}
+
+/* Secondary Buttons (Glass Style) */
+.network-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 16px;
+    color: var(--gray);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+    transition: .25s ease;
+}
+
+.network-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: var(--primary);
+}
+
+/* Primary Big Yellow Button */
+.create-btn {
+    background: var(--gradient-yellow);
+    color: #000;
+    border: none;
+    padding: 16px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: .25s ease;
+    box-shadow: 0 6px 30px rgba(245, 179, 1, 0.25);
+}
+
+.create-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(245, 179, 1, 0.35);
+}
+
+/* Icons in buttons */
+.network-btn i,
+.create-btn i {
+    font-size: 18px;
+}

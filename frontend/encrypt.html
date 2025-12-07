@@ -608,7 +608,7 @@
     font-family: 'Space Grotesk', sans-serif !important;
     font-size: 15px;
     font-weight: 600;
-
+/-
     color: #d5d5d5;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -618,7 +618,7 @@
 .tab-btn.active {
     background: #f1c40f;
     color: #000;
-    box-shadow: 0 6px 20px rgba(241, 196, 15, 0.5);
+  -  box-shadow: 0 6px 20px rgba(241, 196, 15, 0.5);
 }
 
 /* Hover effect */
@@ -630,6 +630,35 @@
 /* Icons */
 .tab-btn i {
     font-size: 16px;
+}
+.wallet-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+/* Address style */
+.wallet-info {
+    display: none; /* JS se flex ho jayega */
+}
+
+.wallet-address {
+    border: 1px solid #f5c400;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #f5c400;
+}
+
+/* Connected button style */
+.wallet-btn.connected,
+.wallet-btn:disabled {
+    background: #f5c400;
+    color: black;
+    font-weight: 600;
 }
     </style>
 </head>
@@ -659,15 +688,16 @@
                 My Bids
             </a>
         </div>
+     <div class="wallet-container">
+    <div class="wallet-info" id="walletInfo" style="display: none;">
+        <div class="wallet-address" id="walletAddress"></div>
+    </div>
 
-        <div class="wallet-info" id="walletInfo">
-            <div class="wallet-address" id="walletAddress"></div>
-        </div>
-
-        <button class="wallet-btn" id="connectWallet">
-            <i class="fas fa-wallet"></i>
-            Connect Wallet
-        </button>
+    <button class="wallet-btn" id="connectWallet">
+        <i class="fas fa-wallet"></i>
+        Connect Wallet
+    </button>
+</div>
     </nav>
 
     <!-- Main Container -->
@@ -679,14 +709,13 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="encrypt">
-                    <i class="fas fa-lock"></i>
-                    Encrypt & Create
+            <button class="tab-btn" data-tab="encrypt">
+                    <i class="fas fa-history"></i>
+                    Encrypt Bids
                 </button>
-                <button class="tab-btn" data-tab="decrypt">
-                    <i class="fas fa-unlock"></i>
-                    Decrypt Bids
-                </button>
+                    <button class="tab-btn" data-tab="decrypt" id="decryptTabBtn">
+    <i class="fas fa-unlock"></i> Decrypt Bids
+</button>
                 <button class="tab-btn" data-tab="history">
                     <i class="fas fa-history"></i>
                     History
@@ -797,7 +826,7 @@
         </div>
 
         <!-- Decrypt Tab -->
-        <div id="decryptTab" class="tab-content">
+           <div id="decryptTab" class="tab-content">
             <div class="content-grid">
                 <!-- Decrypt Panel -->
                 <div class="panel">
@@ -1051,7 +1080,7 @@
                 });
             });
         }
-
+       
         // Connect wallet
         async function connectWallet() {
             try {
@@ -1484,9 +1513,43 @@
             document.getElementById('quickDecryptSelect').value = bidId;
             quickDecrypt();
         }
+  document.getElementById("decryptTabBtn").addEventListener("click", () => {
+    document.getElementById("decryptTab").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+});
+// ========= UNIVERSAL SMOOTH SCROLL FOR ALL 3 TABS ===========
 
-        // Initialize winning bids
-        loadWinningBids();
+// Mapping: tab name → section ID
+const tabScrollTargets = {
+    encrypt: "encryptTab",
+    decrypt: "decryptTab",
+    history: "historyTab"
+};
+
+// Select ALL tab buttons
+const allTabs = document.querySelectorAll(".tab-btn");
+
+allTabs.forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        const tabName = btn.getAttribute("data-tab"); // encrypt / decrypt / history
+        const targetId = tabScrollTargets[tabName];
+        const targetSection = document.getElementById(targetId);
+
+        if (!targetSection) return;
+
+        // Delay so tab activates visibly before scroll
+        setTimeout(() => {
+            targetSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }, 150);
+
+    });
+});
     </script>
 </body>
 </html>

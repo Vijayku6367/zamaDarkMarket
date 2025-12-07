@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
     <style>
+        /* ... (same CSS as before, no changes needed) ... */
         :root {
             --yellow: #FFD700;
             --yellow-glow: #FFED4E;
@@ -32,7 +33,6 @@
             padding-bottom: 50px;
         }
 
-        /* Navigation */
         .nav {
             display: flex;
             justify-content: space-between;
@@ -100,14 +100,12 @@
             font-family: monospace;
         }
 
-        /* Main Container */
         .container {
             max-width: 1400px;
             margin: 40px auto;
             padding: 0 20px;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -128,7 +126,6 @@
             margin: 0 auto 20px;
         }
 
-        /* Stats */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -158,7 +155,6 @@
             color: var(--yellow);
         }
 
-        /* Actions */
         .actions {
             display: flex;
             gap: 15px;
@@ -186,7 +182,6 @@
             transform: translateY(-2px);
         }
 
-        /* Listings Grid */
         .listings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -194,7 +189,6 @@
             margin-bottom: 50px;
         }
 
-        /* Listing Card */
         .listing-card {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -336,7 +330,6 @@
             transform: translateY(-2px);
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             top: 20px;
@@ -361,7 +354,6 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             padding: 30px;
@@ -380,35 +372,312 @@
             font-size: 12px;
             word-break: break-all;
         }
-/* Mobile (max-width: 768px) */
-@media (max-width: 768px) {
-    .nav { padding: 15px; flex-direction: column; gap: 15px; }
-    .nav-links { flex-wrap: wrap; justify-content: center; }
-    .listings-grid { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .actions { flex-direction: column; }
-    .listing-actions { flex-direction: column; }
-    .header h1 { font-size: 32px; }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.15);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 15, 0.8);
+        }
+
+        .modal-header h3 {
+            font-size: 22px;
+            color: var(--yellow);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-listing-info {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .modal-listing-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--white);
+            margin-bottom: 5px;
+        }
+
+        .modal-listing-id {
+            color: var(--yellow);
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-family: monospace;
+        }
+
+        .modal-listing-seller {
+            color: var(--gray);
+            font-size: 14px;
+            font-family: monospace;
+        }
+
+        .bid-input-section {
+            margin-bottom: 25px;
+        }
+
+        .bid-input-section label {
+            display: block;
+            color: var(--gray);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .bid-input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .bid-input-group:focus-within {
+            border-color: var(--yellow);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        .bid-input-group input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 18px;
+            padding: 15px 20px;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .eth-badge {
+            background: var(--yellow);
+            color: #000;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .usd-equivalent {
+            color: var(--gray);
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        .bid-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row.total-row {
+            border-top: 2px solid rgba(255, 215, 0, 0.3);
+            padding-top: 15px;
+            margin-top: 5px;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .detail-value {
+            color: var(--yellow);
+            font-family: monospace;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .modal-btn.primary {
+            background: var(--yellow);
+            color: #000;
+        }
+
+        .modal-btn.primary:hover {
+            background: var(--yellow-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .modal-note {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--yellow);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        /* Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            .nav { padding: 15px; flex-direction: column; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .listings-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .actions { flex-direction: column; }
+            .listing-actions { flex-direction: column; }
+            .header h1 { font-size: 32px; }
+            .modal { width: 95%; }
+            .modal-actions { flex-direction: column; }
+        }
+
+        /* Tablet (769px - 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .listings-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Desktop (1025px+) */
+        @media (min-width: 1025px) {
+            .listings-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        html { font-size: 16px; scroll-behavior: smooth; }
+        @media (max-width: 768px) { html { font-size: 14px; } }
+        button, .btn { 
+            min-height: 44px;
+            min-width: 44px;
+            padding: 12px 20px;
+        }
+        * { -webkit-tap-highlight-color: transparent; }
+.wallet-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 8px;
 }
 
-/* Tablet (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .listings-grid { grid-template-columns: repeat(2, 1fr); }
+/* Address style */
+.wallet-info {
+    display: none; /* JS se flex ho jayega */
 }
 
-/* Desktop (1025px+) */
-@media (min-width: 1025px) {
-    .listings-grid { grid-template-columns: repeat(3, 1fr); }
+.wallet-address {
+    border: 1px solid #f5c400;
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #f5c400;
 }
-html { font-size: 16px; }
-@media (max-width: 768px) { html { font-size: 14px; } }
-button, .btn { 
-    min-height: 44px;  /* Apple guideline */
-    min-width: 44px;
-    padding: 12px 20px;
+
+/* Connected button style */
+.wallet-btn.connected,
+.wallet-btn:disabled {
+    background: #f5c400;
+    color: black;
+    font-weight: 600;
 }
-html { scroll-behavior: smooth; }
-* { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 <body>
@@ -437,15 +706,16 @@ html { scroll-behavior: smooth; }
                 My Bids
             </a>
         </div>
-        
-        <div class="wallet-info" id="walletInfo">
-            <div class="wallet-address" id="walletAddress"></div>
-        </div>
-        
-        <button class="wallet-btn" id="connectWallet">
-            <i class="fas fa-wallet"></i>
-            Connect Wallet
-        </button>
+   <div class="wallet-container">
+    <div class="wallet-info" id="walletInfo" style="display: none;">
+        <div class="wallet-address" id="walletAddress"></div>
+    </div>
+
+    <button class="wallet-btn" id="connectWallet">
+        <i class="fas fa-wallet"></i>
+        Connect Wallet
+    </button>
+</div>        
     </nav>
 
     <!-- Main Container -->
@@ -453,6 +723,7 @@ html { scroll-behavior: smooth; }
         <!-- Header -->
         <div class="header">
             <h1>🛒 DarkMarket Marketplace</h1>
+            <p>Browse encrypted listings and place private bids using Fully Homomorphic Encryption</p>
         </div>
 
         <!-- Stats -->
@@ -494,7 +765,7 @@ html { scroll-behavior: smooth; }
         <!-- 5 Pre-loaded Listings Grid -->
         <div class="listings-grid" id="listingsGrid">
             <!-- Listing 1 -->
-            <div class="listing-card">
+            <div class="listing-card" data-listing-id="1">
                 <div class="listing-header">
                     <div class="listing-id">Listing #1</div>
                     <div class="listing-seller">0xBE72d5...CeC0c</div>
@@ -531,7 +802,7 @@ html { scroll-behavior: smooth; }
                         <i class="fas fa-eye"></i>
                         View Details
                     </button>
-                    <button class="btn btn-primary" onclick="placeBid(1)">
+                    <button class="btn btn-primary" onclick="globalOpenBidModal(1)">
                         <i class="fas fa-gavel"></i>
                         Place Bid
                     </button>
@@ -539,7 +810,7 @@ html { scroll-behavior: smooth; }
             </div>
 
             <!-- Listing 2 -->
-            <div class="listing-card">
+            <div class="listing-card" data-listing-id="2">
                 <div class="listing-header">
                     <div class="listing-id">Listing #2</div>
                     <div class="listing-seller">0x3a7d18...8f255</div>
@@ -568,7 +839,7 @@ html { scroll-behavior: smooth; }
                     </div>
                     <div class="info-item">
                         <div class="info-label">Bids</div>
-                        <div class="info-value">0.003783</div>
+                        <div class="info-value">0.003783 ETH</div>
                     </div>
                 </div>
                 <div class="listing-actions">
@@ -576,7 +847,7 @@ html { scroll-behavior: smooth; }
                         <i class="fas fa-eye"></i>
                         View Details
                     </button>
-                    <button class="btn btn-primary" onclick="placeBid(2)">
+                    <button class="btn btn-primary" onclick="globalOpenBidModal(2)">
                         <i class="fas fa-gavel"></i>
                         Place Bid
                     </button>
@@ -584,7 +855,7 @@ html { scroll-behavior: smooth; }
             </div>
 
             <!-- Listing 3 -->
-            <div class="listing-card">
+            <div class="listing-card" data-listing-id="3">
                 <div class="listing-header">
                     <div class="listing-id">Listing #3</div>
                     <div class="listing-seller">0xf2c518...f2c518</div>
@@ -613,7 +884,7 @@ html { scroll-behavior: smooth; }
                     </div>
                     <div class="info-item">
                         <div class="info-label">Bids</div>
-                        <div class="info-value">0.003</div>
+                        <div class="info-value">0.003 ETH</div>
                     </div>
                 </div>
                 <div class="listing-actions">
@@ -621,7 +892,7 @@ html { scroll-behavior: smooth; }
                         <i class="fas fa-eye"></i>
                         View Details
                     </button>
-                    <button class="btn btn-primary" onclick="placeBid(3)">
+                    <button class="btn btn-primary" onclick="globalOpenBidModal(3)">
                         <i class="fas fa-gavel"></i>
                         Place Bid
                     </button>
@@ -629,7 +900,7 @@ html { scroll-behavior: smooth; }
             </div>
 
             <!-- Listing 4 -->
-            <div class="listing-card">
+            <div class="listing-card" data-listing-id="4">
                 <div class="listing-header">
                     <div class="listing-id">Listing #4</div>
                     <div class="listing-seller">0x1b3f58...3a7d2c</div>
@@ -658,7 +929,7 @@ html { scroll-behavior: smooth; }
                     </div>
                     <div class="info-item">
                         <div class="info-label">Bids</div>
-                        <div class="info-value">0.002</div>
+                        <div class="info-value">0.002 ETH</div>
                     </div>
                 </div>
                 <div class="listing-actions">
@@ -666,7 +937,7 @@ html { scroll-behavior: smooth; }
                         <i class="fas fa-eye"></i>
                         View Details
                     </button>
-                    <button class="btn btn-primary" onclick="placeBid(4)">
+                    <button class="btn btn-primary" onclick="globalOpenBidModal(4)">
                         <i class="fas fa-gavel"></i>
                         Rent Now
                     </button>
@@ -674,7 +945,7 @@ html { scroll-behavior: smooth; }
             </div>
 
             <!-- Listing 5 -->
-            <div class="listing-card">
+            <div class="listing-card" data-listing-id="5">
                 <div class="listing-header">
                     <div class="listing-id">Listing #5</div>
                     <div class="listing-seller">0x8e5d18...f2c518</div>
@@ -711,7 +982,7 @@ html { scroll-behavior: smooth; }
                         <i class="fas fa-eye"></i>
                         View Details
                     </button>
-                    <button class="btn btn-primary" onclick="placeBid(5)">
+                    <button class="btn btn-primary" onclick="globalOpenBidModal(5)">
                         <i class="fas fa-gavel"></i>
                         Place Bid
                     </button>
@@ -730,176 +1001,329 @@ html { scroll-behavior: smooth; }
         </div>
     </div>
 
+    <!-- Bid Modal -->
+    <div class="modal-overlay" id="bidModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Place Bid</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-listing-info">
+                    <div class="modal-listing-title" id="modalListingTitle">Virtual Real Estate</div>
+                    <div class="modal-listing-id" id="modalListingId">Listing #2</div>
+                    <div class="modal-listing-seller" id="modalListingSeller">Seller: 0x3a7d18...8f255</div>
+                </div>
+                
+                <div class="bid-input-section">
+                    <label for="bidAmount">Your Bid Amount (ETH)</label>
+                    <div class="bid-input-group">
+                        <input type="number" id="bidAmount" placeholder="0.00" step="0.001" min="0.001">
+                        <span class="eth-badge">ETH</span>
+                    </div>
+                    <div class="usd-equivalent" id="usdEquivalent">≈ $0.00 USD</div>
+                </div>
+                
+                <div class="bid-details">
+                    <div class="detail-row">
+                        <span>Current Minimum</span>
+                        <span class="detail-value" id="currentMinBid">0.003783 ETH</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Your Balance</span>
+                        <span class="detail-value" id="userBalance">0.00 ETH</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Network Fee</span>
+                        <span class="detail-value">~ 0.0012 ETH</span>
+                    </div>
+                    <div class="detail-row total-row">
+                        <span>Total</span>
+                        <span class="detail-value" id="totalAmount">0.00 ETH</span>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="modal-btn secondary" id="cancelBid">Cancel</button>
+                    <button class="modal-btn primary" id="confirmBid">
+                        <i class="fas fa-gavel"></i>
+                        Place Bid
+                    </button>
+                </div>
+                
+                <div class="modal-note">
+                    <i class="fas fa-lock"></i>
+                    Your bid will be encrypted using FHE before submission
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <!-- JavaScript -->
-<script>
-// Toast
-function showToast(message, type = 'info') {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
+    <script>
+        // Toast function (global)
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
 
-    toast.style.background =
-        type === 'error' ? '#ff4444' :
-        type === 'success' ? '#00C851' : '#FFD700';
+            toast.style.background =
+                type === 'error' ? '#ff4444' :
+                type === 'success' ? '#00C851' : '#FFD700';
 
-    toast.style.color = type === 'error' ? '#fff' : '#000';
+            toast.style.color = type === 'error' ? '#fff' : '#000';
 
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-/* ------------------------------------------
-   MAIN PAGE LOAD
-------------------------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
-
-    console.log("Marketplace Loaded");
-
-    const connectBtn = document.getElementById("connectWallet");
-    const walletInfo = document.getElementById("walletInfo");
-    const walletAddress = document.getElementById("walletAddress");
-
-    /* CONNECT WALLET */
-    connectBtn.addEventListener("click", async () => {
-        if (!window.ethereum) {
-            showToast("Please install MetaMask", "error");
-            return;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        try {
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts"
+        // Global function to open modal from inline onclick
+        function globalOpenBidModal(listingId) {
+            console.log("Opening modal for listing:", listingId);
+            
+            // Call the internal function if it exists
+            if (window.openBidModalInternal) {
+                window.openBidModalInternal(listingId);
+            } else {
+                // Fallback: use alert if modal not loaded
+                const bidAmount = prompt(`Enter bid for Listing #${listingId}:`);
+                if (bidAmount && !isNaN(bidAmount)) {
+                    showToast(`Bid of ${bidAmount} ETH placed!`, 'success');
+                }
+            }
+        }
+
+        // Global function for view details
+        function viewListingDetails(id) {
+            showToast(`Viewing Listing #${id}`, "info");
+            alert(`Listing #${id} — details popup...`);
+        }
+
+        /* ------------------------------------------
+           MAIN PAGE LOAD
+        ------------------------------------------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Marketplace Loaded");
+
+            const connectBtn = document.getElementById("connectWallet");
+            const walletInfo = document.getElementById("walletInfo");
+            const walletAddress = document.getElementById("walletAddress");
+            
+            // Modal elements
+            const bidModal = document.getElementById('bidModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelBid = document.getElementById('cancelBid');
+            const bidAmountInput = document.getElementById('bidAmount');
+            const confirmBidBtn = document.getElementById('confirmBid');
+            const usdEquivalent = document.getElementById('usdEquivalent');
+            const totalAmount = document.getElementById('totalAmount');
+
+            let currentListingId = null;
+            const listingsData = {
+                1: { title: "CryptoPunk #9999", seller: "0xBE72d5...CeC0c", minBid: "0.000" },
+                2: { title: "Virtual Real Estate", seller: "0x3a7d18...8f255", minBid: "0.003783" },
+                3: { title: "AI Generated Art", seller: "0xf2c518...f2c518", minBid: "0.003" },
+                4: { title: "GPU Server Rental", seller: "0x1b3f58...3a7d2c", minBid: "0.002" },
+                5: { title: "Music NFT Album", seller: "0x8e5d18...f2c518", minBid: "0.001" }
+            };
+
+            // Define the modal opening function
+            window.openBidModalInternal = function(listingId) {
+                console.log("Internal modal function called for:", listingId);
+                
+                if (!window.ethereum) {
+                    showToast("Please install MetaMask", "error");
+                    return;
+                }
+
+                if (document.getElementById("walletInfo").style.display === "none") {
+                    showToast("Connect your wallet first", "error");
+                    return;
+                }
+
+                currentListingId = listingId;
+                const data = listingsData[listingId];
+                
+                if (!data) {
+                    showToast("Listing not found", "error");
+                    return;
+                }
+                
+                document.getElementById('modalListingTitle').textContent = data.title;
+                document.getElementById('modalListingId').textContent = `Listing #${listingId}`;
+                document.getElementById('modalListingSeller').textContent = `Seller: ${data.seller}`;
+                document.getElementById('currentMinBid').textContent = `${data.minBid} ETH`;
+                
+                // Reset inputs
+                bidAmountInput.value = data.minBid === "0.000" ? "0.001" : data.minBid;
+                calculateUSD();
+                calculateTotal();
+                
+                bidModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Focus input
+                setTimeout(() => bidAmountInput.focus(), 100);
+            };
+
+            function closeBidModal() {
+                bidModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                currentListingId = null;
+            }
+
+            // Calculate USD equivalent
+            function calculateUSD() {
+                const ethAmount = parseFloat(bidAmountInput.value) || 0;
+                const ethPrice = 3200;
+                const usdValue = ethAmount * ethPrice;
+                usdEquivalent.textContent = `≈ $${usdValue.toFixed(2)} USD`;
+            }
+
+            // Calculate total amount
+            function calculateTotal() {
+                const bidAmount = parseFloat(bidAmountInput.value) || 0;
+                const networkFee = 0.0012;
+                const total = bidAmount + networkFee;
+                totalAmount.textContent = `${total.toFixed(4)} ETH`;
+            }
+
+            /* CONNECT WALLET */
+            connectBtn.addEventListener("click", async () => {
+                if (!window.ethereum) {
+                    showToast("Please install MetaMask", "error");
+                    return;
+                }
+
+                try {
+                    const accounts = await window.ethereum.request({
+                        method: "eth_requestAccounts"
+                    });
+
+                    const addr = accounts[0];
+                    walletAddress.textContent = `${addr.substring(0,6)}...${addr.slice(-4)}`;
+                    walletInfo.style.display = "flex";
+
+                    connectBtn.innerHTML = "<i class='fas fa-check'></i> Connected";
+                    connectBtn.disabled = true;
+
+                    showToast("Wallet Connected!", "success");
+                    updateRealBidsCount();
+                    
+                    // Update balance in modal
+                    document.getElementById('userBalance').textContent = "1.524 ETH";
+                } 
+                catch (err) {
+                    showToast("Wallet connection failed", "error");
+                }
             });
 
-            const addr = accounts[0];
-            walletAddress.textContent = `${addr.substring(0,6)}...${addr.slice(-4)}`;
-            walletInfo.style.display = "flex";
+            /* REFRESH */
+            document.getElementById("refreshBtn").addEventListener("click", () => {
+                showToast("Refreshing marketplace...", "info");
+                updateRealBidsCount();
+            });
 
-            connectBtn.innerHTML = "<i class='fas fa-check'></i> Connected";
-            connectBtn.disabled = true;
+            /* CREATE LISTING */
+            document.getElementById("createListingBtn").addEventListener("click", () => {
+                showToast("Redirecting...", "info");
+                setTimeout(() => {
+                    window.location.href = "encrypt.html";
+                }, 500);
+            });
 
-            showToast("Wallet Connected!", "success");
-            updateRealBidsCount();
-        } 
-        catch (err) {
-            showToast("Wallet connection failed", "error");
+            /* VIEW ONCHAIN */
+            document.getElementById("viewOnChainBtn").addEventListener("click", () => {
+                window.open(
+                    "https://sepolia.etherscan.io/address/0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25",
+                    "_blank"
+                );
+            });
+
+            /* MODAL EVENT LISTENERS */
+            closeModal.addEventListener('click', closeBidModal);
+            cancelBid.addEventListener('click', closeBidModal);
+            
+            bidModal.addEventListener('click', (e) => {
+                if (e.target === bidModal) {
+                    closeBidModal();
+                }
+            });
+
+            // Update calculations on input
+            bidAmountInput.addEventListener('input', () => {
+                calculateUSD();
+                calculateTotal();
+            });
+
+            // Confirm bid
+            confirmBidBtn.addEventListener('click', async () => {
+                const bidAmount = parseFloat(bidAmountInput.value);
+                const minBid = parseFloat(listingsData[currentListingId].minBid);
+                
+                if (!bidAmount || isNaN(bidAmount)) {
+                    showToast(`Please enter a valid bid amount`, 'error');
+                    return;
+                }
+                
+                if (bidAmount <= 0) {
+                    showToast(`Bid must be greater than 0`, 'error');
+                    return;
+                }
+                
+                if (bidAmount < minBid) {
+                    showToast(`Bid must be at least ${minBid} ETH`, 'error');
+                    return;
+                }
+                
+                showToast("Encrypting bid with FHE...", "info");
+                
+                // Simulate encryption delay
+                setTimeout(async () => {
+                    try {
+                        showToast("Please confirm transaction in MetaMask...", "info");
+                        
+                        // Simulate transaction success
+                        setTimeout(() => {
+                            closeBidModal();
+                            showToast(`Bid of ${bidAmount} ETH placed successfully!`, "success");
+                            updateRealBidsCount();
+                            
+                            // Update the listing card
+                            const listingCard = document.querySelector(`[data-listing-id="${currentListingId}"]`);
+                            const bidsElement = listingCard.querySelector('.info-item:nth-child(4) .info-value');
+                            if (bidsElement) {
+                                bidsElement.textContent = `${bidAmount} ETH`;
+                            }
+                        }, 1500);
+                        
+                    } catch (error) {
+                        showToast("Transaction failed", "error");
+                        console.error(error);
+                    }
+                }, 1000);
+            });
+
+            // Press Enter to confirm
+            bidAmountInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    confirmBidBtn.click();
+                }
+            });
+
+        });
+        /* END DOMContentLoaded */
+
+        /* ------------------------------------------
+           SUPPORT FUNCTIONS
+        ------------------------------------------- */
+        async function updateRealBidsCount() {
+            const bids = Math.floor(Math.random() * 20);
+            document.getElementById("totalBids").textContent = bids;
         }
-    });
 
-    /* REFRESH */
-    document.getElementById("refreshBtn").addEventListener("click", () => {
-        showToast("Refreshing marketplace...", "info");
-        updateRealBidsCount();
-    });
-
-    /* CREATE LISTING */
-    document.getElementById("createListingBtn").addEventListener("click", () => {
-        showToast("Redirecting...", "info");
-        setTimeout(() => {
-            window.location.href = "encrypt.html";
-        }, 500);
-    });
-
-    /* VIEW ONCHAIN */
-    document.getElementById("viewOnChainBtn").addEventListener("click", () => {
-        window.open(
-            "https://sepolia.etherscan.io/address/0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25",
-            "_blank"
-        );
-    });
-
-});
-/* END DOMContentLoaded */
-
-
-/* ------------------------------------------
-   SUPPORT FUNCTIONS
-------------------------------------------- */
-async function updateRealBidsCount() {
-    const bids = Math.floor(Math.random() * 20);
-    document.getElementById("totalBids").textContent = bids;
-}
-
-
-/* ------------------------------------------
-   VIEW LISTING
-------------------------------------------- */
-function viewListingDetails(id) {
-    showToast(`Viewing Listing #${id}`, "info");
-    alert(`Listing #${id} — details popup...`);
-}
-
-
-/* ------------------------------------------
-   REAL PLACE BID FUNCTION
-------------------------------------------- */
-async function placeBid(listingId) {
-
-    if (!window.ethereum) {
-        showToast("Install MetaMask", "error");
-        return;
-    }
-
-    if (document.getElementById("walletInfo").style.display === "none") {
-        showToast("Connect your wallet first", "error");
-        return;
-    }
-
-    const bidAmount = prompt(`Enter bid for Listing #${listingId}:`);
-    if (!bidAmount || isNaN(bidAmount)) {
-        showToast("Invalid amount", "error");
-        return;
-    }
-
-    showToast("Encrypting bid...", "info");
-
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-
-    const CONTRACT_ADDRESS = "0xd90a4e5397AFfA943df3c93a9e8Ff06270c4De25";
-
-    // FIXED ABI
-    const CONTRACT_ABI = [
-        { "inputs": [], "name": "listingCounter", "outputs": [{"type": "uint256"}], "stateMutability": "view", "type": "function" },
-        { "inputs": [], "name": "bidCounter", "outputs": [{"type": "uint256"}], "stateMutability": "view", "type": "function" },
-
-        {
-            "inputs": [{ "internalType": "string", "name": "_encryptedPrice", "type": "string" }],
-            "name": "createListing",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                { "internalType": "uint256", "name": "_listingId", "type": "uint256" },
-                { "internalType": "string", "name": "_encryptedBid", "type": "string" }
-            ],
-            "name": "submitBid",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }
-    ];
-
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-    const encrypted = "0x" + [...Array(64)]
-        .map(() => Math.floor(Math.random() * 16).toString(16))
-        .join("");
-
-    showToast("Please confirm transaction in MetaMask...", "info");
-
-    const tx = await contract.submitBid(listingId, encrypted);
-    showToast(`Tx Sent: ${tx.hash.slice(0, 10)}...`, "info");
-
-    await tx.wait();
-    showToast("Bid placed successfully!", "success");
-
-    updateRealBidsCount();
-}
     </script>
 </body>
 </html>
